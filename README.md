@@ -43,14 +43,13 @@ const powertools = require('node-powertools');
 
 ```
 ## Usage
-Now you can harness powerful features
+**powertools.random(min, max, options)**
 ```js
-// assistant.log: correctly logs objects in Firebase functions
-assistant.log({
-  parent: {
-    child: 'value'
-  }
-}, {environment: 'production'})
+powertools.random(1, 100); // 69
+powertools.random(1, 100, {sign: -1}); // -69
+powertools.random(1, 100, {sign: 1}); // 69
+powertools.random(1, 100, {sign: 0}); // -69 (sign: 0 --> randomizes sign)
+powertools.random(['Apple', 'Orange', 'Pear']); // Orange
 ```
 
 ## Final Words
@@ -60,6 +59,7 @@ If you are still having difficulty, we would love for you to post a question to 
 [Somiibo](https://somiibo.com/): A Social Media Bot with an open-source module library. <br>
 [JekyllUp](https://jekyllup.com/): A website devoted to sharing the best Jekyll themes. <br>
 [Slapform](https://slapform.com/): A backend processor for your HTML forms on static sites. <br>
+[Proxifly](https://proxifly.com/): A backend processor for your HTML forms on static sites. <br>
 [SoundGrail Music App](https://app.soundgrail.com/): A resource for producers, musicians, and DJs. <br>
 [Hammock Report](https://hammockreport.com/): An API for exploring and listing backyard products. <br>
 
