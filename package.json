@@ -1,0 +1,28 @@
+{
+  "name": "node-powertools",
+  "version": "0.0.0",
+  "description": "Powerful assistive functions for Node and Browser environments.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itw-creative-works/node-powertools.git"
+  },
+  "keywords": [
+    "management",
+    "backend",
+    "frontend",
+    "productivity"
+  ],
+  "author": "ITW Creative Works",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itw-creative-works/node-powertools/issues"
+  },
+  "homepage": "https://github.com/itw-creative-works/node-powertools#readme",
+  "dependencies": {
+
+  }
+}
