@@ -38,6 +38,10 @@
     }
   };
 
+  // TODO: Add forceType
+  // TODO: Add wait
+  // TODO: Add poll
+
   return Powertools; // Enable if using UMD
 
 }));

@@ -1,29 +1,29 @@
-<div align="center">
+<p align="center">
   <a href="https://cdn.itwcreativeworks.com/assets/itw-creative-works/images/logo/itw-creative-works-brandmark-black-x.svg">
     <img src="https://cdn.itwcreativeworks.com/assets/itw-creative-works/images/logo/itw-creative-works-brandmark-black-x.svg">
   </a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/github/package-json/v/itw-creative-works/node-powertools.svg">
+  <br>
+  <img src="https://img.shields.io/david/itw-creative-works/node-powertools.svg">
+  <img src="https://img.shields.io/david/dev/itw-creative-works/node-powertools.svg">
+  <img src="https://img.shields.io/bundlephobia/min/node-powertools.svg">
+  <img src="https://img.shields.io/codeclimate/maintainability-percentage/itw-creative-works/node-powertools.svg">
+  <img src="https://img.shields.io/npm/dm/node-powertools.svg">
+  <img src="https://img.shields.io/node/v/node-powertools.svg">
+  <img src="https://img.shields.io/website/https/itwcreativeworks.com.svg">
+  <img src="https://img.shields.io/github/license/itw-creative-works/node-powertools.svg">
+  <img src="https://img.shields.io/github/contributors/itw-creative-works/node-powertools.svg">
+  <img src="https://img.shields.io/github/last-commit/itw-creative-works/node-powertools.svg">
   <br>
   <br>
-
-![GitHub package.json version](https://img.shields.io/github/package-json/v/itw-creative-works/node-powertools.svg)
-
-![David](https://img.shields.io/david/itw-creative-works/node-powertools.svg)
-![David](https://img.shields.io/david/dev/itw-creative-works/node-powertools.svg) <!-- ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/itw-creative-works/node-powertools.svg) -->
-![npm bundle size](https://img.shields.io/bundlephobia/min/node-powertools.svg)
-![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability-percentage/itw-creative-works/node-powertools.svg)
-![npm](https://img.shields.io/npm/dm/node-powertools.svg) <!-- [![NPM total downloads](https://img.shields.io/npm/dt/node-powertools.svg?style=flat)](https://npmjs.org/package/node-powertools) -->
-![node](https://img.shields.io/node/v/node-powertools.svg)
-![Website](https://img.shields.io/website/https/itwcreativeworks.com.svg)
-![GitHub](https://img.shields.io/github/license/itw-creative-works/node-powertools.svg)
-![GitHub contributors](https://img.shields.io/github/contributors/itw-creative-works/node-powertools.svg)
-![GitHub last commit](https://img.shields.io/github/last-commit/itw-creative-works/node-powertools.svg)
-
-# Node Powertools
-**Node Powertools** is an NPM module for backend and frontend developers that exposes powerful utilities and tools.
-
-[Site](https://itwcreativeworks.com) | [NPM Module](https://www.npmjs.com/package/node-powertools) | [GitHub Repo](https://github.com/itw-creative-works/node-powertools)
-
-</div>
+  <a href="https://itwcreativeworks.com">Site</a> | <a href="https://www.npmjs.com/package/node-powertools">NPM Module</a> | <a href="https://github.com/itw-creative-works/node-powertools">GitHub Repo</a>
+  <br>
+  <br>
+  <strong>Node Powertools</strong> is an NPM module for backend and frontend developers that exposes powerful utilities and tools.
+</p>
 
 ## Install
 Install with npm:
