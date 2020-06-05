@@ -38,9 +38,65 @@
     }
   };
 
+  Powertools.arrayify = function (input) {
+    return !Array.isArray(input) ? [input] : input;
+  };
+
+  Powertools.wait = function(ms) {
+  return new Promise(function(resolve, reject) {
+    setInterval(function() {
+      resolve();
+    }, ms || 1);
+  });
+
+  Powertools.poll = function(fn, options) {
+    options = options || {};
+    options.interval = options.interval || 100;
+
+    let endTime = Number(new Date()) + (options.timeout || 2000);
+    let isAsync = fn.constructor.name === "AsyncFunction";
+    let index = 0;
+
+    return new Promise(function(resolve, reject) {
+      (async function p() {
+        // If the condition is met, we're done!
+        if (!isAsync && fn(index)) {
+          return resolve();
+        }
+        else if (isAsync && await fn(index)) {
+          return resolve();
+        }
+        // If the condition isn't met but the timeout hasn't elapsed, go again
+        else if (Number(new Date()) < endTime || options.timeout < 1) {
+          // console.log('polling...');
+          index++;
+          setTimeout(p, options.interval);
+        }
+        // Didn't match and too much time, reject!
+        else {
+          return reject(new Error('Timed out for ' + fn + ': ' + arguments));
+        }
+      })();
+    });
+  }
+
+  Powertools.escape = function(s) {
+    return (s + '').replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  };
+
+  Powertools.regexify = function(regex) {
+    if (typeof regex === 'string') {
+      let flags = regex.replace(/.*\/([gimy]*)$/, '$1');
+      let pattern = regex.replace(new RegExp(`^/(.*?)/${flags}$`), '$1');
+      return new RegExp(pattern, flags);
+    }
+    return regex;
+  };
+
+};
+
+
   // TODO: Add forceType
-  // TODO: Add wait
-  // TODO: Add poll
 
   return Powertools; // Enable if using UMD
 

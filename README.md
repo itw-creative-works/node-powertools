@@ -44,12 +44,56 @@ const powertools = require('node-powertools');
 ```
 ## Usage
 **powertools.random(min, max, options)**
+Generate a random number between two numbers `min` and `max`. You can use `options` to supply a sign or randomize the sign as well. If an array is supplied, a random element from the array is returned.
 ```js
 powertools.random(1, 100); // 69
 powertools.random(1, 100, {sign: -1}); // -69
 powertools.random(1, 100, {sign: 1}); // 69
 powertools.random(1, 100, {sign: 0}); // -69 (sign: 0 --> randomizes sign)
 powertools.random(['Apple', 'Orange', 'Pear']); // Orange
+```
+
+**powertools.arrayify(input)**
+Transform the `input` into an array if it is not already.
+```js
+powertools.arrayify(1); // [1]
+powertools.arrayify([1]); // [1]
+```
+
+**powertools.wait(time)**
+Asynchronously wait for the specified `time` in milliseconds.
+```js
+await powertools.wait(1000); // waits for 1000 ms (1 second)
+```
+
+**powertools.poll(fn, options)**
+Asynchronously wait for the specified `fn` to return `true`. You can use `options` to supply a polling interval and timeout in milliseconds. The promise **rejects** if the timeout is reached.
+```js
+// Call this function every 100 ms until it returns true or 30000 ms passes
+await powertools.poll(function () {
+  return something === somethingElse;
+}, {interval: 100, timeout: 30000});
+```
+
+**powertools.escape(str)**
+Add escape character `\` before any character in `str` that needs to be escaped for a `RegExp`.
+```js
+powertools.escape('*'); // \*
+powertools.escape('/'); // \/
+powertools.escape('\\'); // \\
+powertools.escape('.$^'); // \.\$\^
+```
+
+**powertools.regexify(str)**
+Revive a `str` into a `RegExp`. Supports flags. Depending on how you want special characters to be treated, you can use `powertools.escape(str)` prior to using `powertools.regexify(str)`.
+```js
+powertools.regexify('/Apple/'); // RegExp /Apple/
+powertools.regexify('/Apple/i'); // RegExp /Apple/i
+powertools.regexify('Apple'); // Throws error (needs to start and end with /)
+powertools.regexify('/Apple/x'); // Throws error (x is not a valid flag)
+
+powertools.regexify('/Ap.le/'); // RegExp /Ap.le/
+powertools.regexify(`/${powertools.escape('Ap.le')}/`); // RegExp /Ap\.le/
 ```
 
 ## Final Words
