@@ -38,16 +38,19 @@
     }
   };
 
+
   Powertools.arrayify = function (input) {
     return !Array.isArray(input) ? [input] : input;
   };
 
+
   Powertools.wait = function(ms) {
-  return new Promise(function(resolve, reject) {
-    setInterval(function() {
-      resolve();
-    }, ms || 1);
-  });
+    return new Promise(function(resolve, reject) {
+      setInterval(function() {
+        resolve();
+      }, ms || 1);
+    });
+  }
 
   Powertools.poll = function(fn, options) {
     options = options || {};
@@ -92,9 +95,6 @@
     }
     return regex;
   };
-
-};
-
 
   // TODO: Add forceType
 
