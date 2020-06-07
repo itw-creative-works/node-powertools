@@ -98,7 +98,7 @@ powertools.regexify(`/${powertools.escape('Ap.le')}/`); // Output: RegExp /Ap\.l
 
 ### powertools.timestamp(date, options)
 Convert a `date` to a timestamp in 3 formats: an ISO `string`, a UNIX `number`, or a plain-ol' JS `Date` (as specified in `options`).
-The first argument `date`  can be a JS `Date`, a unix timestamp `number`, or a `string` that will be parsed by the `new Date()` method.
+The first argument `date`  can be a JS `Date`, a UNIX timestamp `number`, or a `string` that will be parsed by the `new Date()` method.
 ```js
 powertools.timestamp(new Date('2999/12/31'), {output: 'string'}); // Output: "2999-12-31T08:00:00.000Z"
 powertools.timestamp(new Date('2999/12/31'), {output: 'unix'}); // Output: 32503622400
