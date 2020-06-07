@@ -76,7 +76,7 @@ await powertools.poll(function () {
 ```
 
 ### powertools.escape(str)
-Add escape character `\` before any character in `str` that needs to be escaped for a `RegExp`.
+Add the escape character `\` before any character in `str` that needs to be escaped for a `RegExp`.
 ```js
 powertools.escape('*'); // Output: \*
 powertools.escape('/'); // Output: \/
