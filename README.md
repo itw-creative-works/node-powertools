@@ -43,8 +43,7 @@ const powertools = require('node-powertools');
 
 ```
 ## Usage
-**powertools.random(min, max, options)**
-
+### powertools.random(min, max, options)
 Generate a random number between two numbers `min` and `max`. You can use `options` to supply a sign or randomize the sign as well. If an array is supplied, a random element from the array is returned.
 ```js
 powertools.random(1, 100); // Output: 69
@@ -54,23 +53,20 @@ powertools.random(1, 100, {sign: 0}); // Output: -69 (sign: 0 --> randomizes sig
 powertools.random(['Apple', 'Orange', 'Pear']); // Output: Orange (random element)
 ```
 
-**powertools.arrayify(input)**
-
+### powertools.arrayify(input)
 Transform the `input` into an array if it is not already.
 ```js
 powertools.arrayify(1); // Output: [1]
 powertools.arrayify([1]); // Output: [1]
 ```
 
-**powertools.wait(time)**
-
+### powertools.wait(time)
 Asynchronously wait for the specified `time` in milliseconds.
 ```js
 await powertools.wait(1000); // waits for 1000 ms (1 second)
 ```
 
-**powertools.poll(fn, options)**
-
+### powertools.poll(fn, options)
 Asynchronously wait for the specified `fn` to return `true`. You can use `options` to supply a polling interval and timeout in milliseconds. The promise **rejects** if the timeout is reached.
 ```js
 // Call this function every 100 ms until it returns true or 30000 ms passes
@@ -79,8 +75,7 @@ await powertools.poll(function () {
 }, {interval: 100, timeout: 30000});
 ```
 
-**powertools.escape(str)**
-
+### powertools.escape(str)
 Add escape character `\` before any character in `str` that needs to be escaped for a `RegExp`.
 ```js
 powertools.escape('*'); // Output: \*
@@ -89,8 +84,7 @@ powertools.escape('\\'); // Output: \\
 powertools.escape('.$^'); // Output: \.\$\^
 ```
 
-**powertools.regexify(str)**
-
+### powertools.regexify(str)
 Revive a `str` into a `RegExp`. Supports flags. Depending on how you want special characters to be treated, you can use `powertools.escape(str)` prior to using `powertools.regexify(str)`.
 ```js
 powertools.regexify('/Apple/'); // Output: RegExp /Apple/
@@ -102,8 +96,7 @@ powertools.regexify('/Ap.le/'); // Output: RegExp /Ap.le/
 powertools.regexify(`/${powertools.escape('Ap.le')}/`); // Output: RegExp /Ap\.le/
 ```
 
-**powertools.timestamp(date, options)**
-
+### powertools.timestamp(date, options)
 Convert a `date` to a timestamp in 3 formats: an ISO `string`, a UNIX `number`, or a plain-ol' JS `Date` (as specified in `options`).
 The first argument `date`  can be a JS `Date`, a unix timestamp `number`, or a `string` that will be parsed by the `new Date()` method.
 ```js
