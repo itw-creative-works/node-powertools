@@ -96,6 +96,27 @@
     return regex;
   };
 
+  Powertools.timestamp = function(input, options) {
+    options = options || {};
+    options.output = (options.output || 'string').toLowerCase();
+    let date = input || new Date();
+
+    if (typeof date === 'number') {
+      date = new Date(date * 1000);
+    } else if (typeof date === 'string') {
+      date = new Date(date);
+    }
+
+
+    if (options.output === 'string') {
+      return date.toISOString()
+    } else if (options.output === 'unix') {
+      return Math.floor((+date) / 1000);
+    } else {
+      return date;
+    }
+  };
+
   // TODO: Add forceType
 
   return Powertools; // Enable if using UMD

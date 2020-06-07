@@ -46,18 +46,18 @@ const powertools = require('node-powertools');
 **powertools.random(min, max, options)**
 Generate a random number between two numbers `min` and `max`. You can use `options` to supply a sign or randomize the sign as well. If an array is supplied, a random element from the array is returned.
 ```js
-powertools.random(1, 100); // 69
-powertools.random(1, 100, {sign: -1}); // -69
-powertools.random(1, 100, {sign: 1}); // 69
-powertools.random(1, 100, {sign: 0}); // -69 (sign: 0 --> randomizes sign)
-powertools.random(['Apple', 'Orange', 'Pear']); // Orange
+powertools.random(1, 100); // Output: 69
+powertools.random(1, 100, {sign: -1}); // Output: -69
+powertools.random(1, 100, {sign: 1}); // Output: 69
+powertools.random(1, 100, {sign: 0}); // Output: -69 (sign: 0 --> randomizes sign)
+powertools.random(['Apple', 'Orange', 'Pear']); // Output: Orange (random element)
 ```
 
 **powertools.arrayify(input)**
 Transform the `input` into an array if it is not already.
 ```js
-powertools.arrayify(1); // [1]
-powertools.arrayify([1]); // [1]
+powertools.arrayify(1); // Output: [1]
+powertools.arrayify([1]); // Output: [1]
 ```
 
 **powertools.wait(time)**
@@ -78,22 +78,36 @@ await powertools.poll(function () {
 **powertools.escape(str)**
 Add escape character `\` before any character in `str` that needs to be escaped for a `RegExp`.
 ```js
-powertools.escape('*'); // \*
-powertools.escape('/'); // \/
-powertools.escape('\\'); // \\
-powertools.escape('.$^'); // \.\$\^
+powertools.escape('*'); // Output: \*
+powertools.escape('/'); // Output: \/
+powertools.escape('\\'); // Output: \\
+powertools.escape('.$^'); // Output: \.\$\^
 ```
 
 **powertools.regexify(str)**
 Revive a `str` into a `RegExp`. Supports flags. Depending on how you want special characters to be treated, you can use `powertools.escape(str)` prior to using `powertools.regexify(str)`.
 ```js
-powertools.regexify('/Apple/'); // RegExp /Apple/
-powertools.regexify('/Apple/i'); // RegExp /Apple/i
-powertools.regexify('Apple'); // Throws error (needs to start and end with /)
-powertools.regexify('/Apple/x'); // Throws error (x is not a valid flag)
+powertools.regexify('/Apple/'); // Output: RegExp /Apple/
+powertools.regexify('/Apple/i'); // Output: RegExp /Apple/i
+powertools.regexify('Apple'); // Output: Throws error (needs to start and end with /)
+powertools.regexify('/Apple/x'); // Output: Throws error (x is not a valid flag)
 
-powertools.regexify('/Ap.le/'); // RegExp /Ap.le/
-powertools.regexify(`/${powertools.escape('Ap.le')}/`); // RegExp /Ap\.le/
+powertools.regexify('/Ap.le/'); // Output: RegExp /Ap.le/
+powertools.regexify(`/${powertools.escape('Ap.le')}/`); // Output: RegExp /Ap\.le/
+```
+
+**powertools.timestamp(date, options)**
+Convert a `date` to a timestamp in 3 formats: an ISO `string`, a UNIX `number`, or a plain-ol' JS `Date` (as specified in `options`).
+The first argument `date`  can be a JS `Date`, a unix timestamp `number`, or a `string` that will be parsed by the `new Date()` method.
+```js
+powertools.timestamp(new Date('2999/12/31'), {output: 'string'}); // Output: "2999-12-31T08:00:00.000Z"
+powertools.timestamp(new Date('2999/12/31'), {output: 'unix'}); // Output: 32503622400
+powertools.timestamp(new Date('2999/12/31'), {output: 'date'}); // Output: Tue Dec 31 2999 00:00:00 GMT-0800 (Pacific Standard Time)
+
+powertools.timestamp(32503622400, {output: 'string'}); // Output: "2999-12-31T08:00:00.000Z"
+powertools.timestamp(32503622400, {output: 'unix'}); // Output: 32503622400
+powertools.timestamp(32503622400, {output: 'date'}); // Output: Tue Dec 31 2999 00:00:00 GMT-0800 (Pacific Standard Time)
+
 ```
 
 ## Final Words
