@@ -36,7 +36,7 @@ npm install node-powertools
 * Helpful **polling** utilities
 
 ## Example Setup
-After installing via npm, simply paste this script in your `functions/index.js` file.
+After installing via npm, simply `require` the library and begin enjoying the powertools 🧰.
 ```js
 // In your functions/index.js file
 const powertools = require('node-powertools');
