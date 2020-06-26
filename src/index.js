@@ -32,7 +32,7 @@
     if (Array.isArray(min)) {
       return min[Math.floor(Math.random() * min.length)];
     } else {
-      let num = Math.floor(Math.random() * (max - min + 1) + min);
+      var num = Math.floor(Math.random() * (max - min + 1) + min);
       options.sign = (options.sign === '$random' || options.sign === 0 ? (Math.floor(Math.random() * (100 - 1 + 1) + 1) >= 50 ? -1 : 1) : (typeof options.sign === 'undefined' ? 1 : options.sign));
       return (Math.floor(Math.random() * (max - min + 1) + min)) * options.sign;
     }
@@ -56,9 +56,9 @@
     options = options || {};
     options.interval = options.interval || 100;
 
-    let endTime = Number(new Date()) + (options.timeout || 2000);
-    let isAsync = fn.constructor.name === "AsyncFunction";
-    let index = 0;
+    var endTime = Number(new Date()) + (options.timeout || 2000);
+    var isAsync = fn.constructor.name === 'AsyncFunction';
+    var index = 0;
 
     return new Promise(function(resolve, reject) {
       (async function p() {
@@ -89,8 +89,8 @@
 
   Powertools.regexify = function(regex) {
     if (typeof regex === 'string') {
-      let flags = regex.replace(/.*\/([gimy]*)$/, '$1');
-      let pattern = regex.replace(new RegExp(`^/(.*?)/${flags}$`), '$1');
+      var flags = regex.replace(/.*\/([gimy]*)$/, '$1');
+      var pattern = regex.replace(new RegExp(`^/(.*?)/${flags}$`), '$1');
       return new RegExp(pattern, flags);
     }
     return regex;
@@ -99,7 +99,7 @@
   Powertools.timestamp = function(input, options) {
     options = options || {};
     options.output = (options.output || 'string').toLowerCase();
-    let date = input || new Date();
+    var date = input || new Date();
 
     if (typeof date === 'number') {
       date = new Date(date * 1000);
@@ -117,7 +117,102 @@
     }
   };
 
-  // TODO: Add forceType
+
+  Powertools.force = function(input, type, options) {
+    if (type === 'string') {
+      return forceString(input);
+    } else if (type === 'number') {
+      return forceNumber(input);
+    } else if (type === 'boolean') {
+      return forceBoolean(input);
+    } else if (type === 'array') {
+      return forceArray(input, options);
+    }
+  };
+
+  function forceString(input) {
+    if (typeof input === 'string') {
+      return input;
+    } else if (typeof input === 'undefined' || input == null || isNaN(input)) {
+      return '';
+    } else {
+      return input + '';
+    }
+  }
+
+  function forceNumber(input) {
+    if (typeof input === 'number' && !isNaN(input)) {
+      return input;
+    } else if (typeof input === 'string') {
+      return parseFloat(input);
+    } else if (typeof input === 'undefined' || input == null) {
+      return 0;
+    } else if (typeof input === 'object') {
+      if (Array.isArray(input)) {
+        return input.length;
+      } else if (isNaN(input) && typeof input === 'number') {
+        return 0;
+      } else {
+        return Object.keys(input).length;
+      }
+    } else if (input === false) {
+      return 0;
+    } else if (input === true) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
+  function forceBoolean(input) {
+    if (input === 'true') {
+      return true;
+    } else if (input === 'false' || input === '0') {
+      return false;
+    } else if (typeof input === 'object') {
+      var length;
+      if (Array.isArray(input)) {
+        length = input.length;
+      } else if (isNaN(input) && typeof input === 'number') {
+        length = 0;
+      } else if (input == null) {
+        length = 0;
+      } else {
+        length = Object.keys(input).length;
+      }
+      return length !== 0;
+    } else {
+      return !!input;
+    }
+  }
+
+  function forceArray(input, options) {
+    options = options || {};
+    var result = input;
+    if (typeof result === 'undefined' || result == null) {
+      return [];
+    } else if (!Array.isArray(result)) {
+      result = typeof result === 'string' ? result : `${result}`;
+      result = result.split(',');
+    }
+
+    for (var i = 0, l = result.length; i < l; i++) {
+      if (options.trim !== false && typeof result[i] === 'string') {
+        result[i] = result[i].trim();
+      }
+      if (options.force === 'string' && typeof result[i] !== 'string') {
+        result[i] = forceString(result[i]);
+      } else if (options.force === 'number' && typeof result[i] !== 'number') {
+        result[i] = forceNumber(result[i]);
+      } else if (options.force === 'boolean' && typeof result[i] !== 'boolean') {
+        result[i] = forceBoolean(result[i]);
+      }
+    }
+
+    return result.filter(function (item) {
+      return item !== '' && typeof item !== 'undefined';
+    });
+  }
 
   return Powertools; // Enable if using UMD
 

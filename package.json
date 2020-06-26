@@ -1,10 +1,10 @@
 {
   "name": "node-powertools",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Powerful assistive functions for Node and Browser environments.",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/mocha/bin/mocha test/ --recursive --timeout=10000"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -25,7 +25,8 @@
     "url": "https://github.com/itw-creative-works/node-powertools/issues"
   },
   "homepage": "https://itwcreativeworks.com",
-  "dependencies": {
-
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^8.0.1"
   }
 }
