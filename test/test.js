@@ -87,6 +87,9 @@ describe('Node Powertools', () => {
       });
 
       // Edge
+      it('string => number', () => {
+        return assert.equal(powertools.force('a random string', 'number'), 1);
+      });
       it('true => number', () => {
         return assert.equal(powertools.force(true, 'number'), 1);
       });

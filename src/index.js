@@ -29,20 +29,35 @@
 
   Powertools.random = function (min, max, options) {
     options = options || {};
+    options.mode = options.mode || 'gaussian';
     if (Array.isArray(min)) {
       return min[Math.floor(Math.random() * min.length)];
+    } else if (options.mode === 'gaussian') {
+      var rand = 0;
+      options.samples = options.samples || 3;
+
+      for (var i = 0; i < options.samples; i++) {
+        rand += Math.random() + (options.flux || 0);
+      }
+
+      rand = rand / options.samples;
+      rand = Math.floor(min + rand * (max - min + 1));
+      rand = rand < min ? min : rand;
+      rand = rand > max ? max : rand;
+
+      return rand;
     } else {
-      var num = Math.floor(Math.random() * (max - min + 1) + min);
-      options.sign = (options.sign === '$random' || options.sign === 0 ? (Math.floor(Math.random() * (100 - 1 + 1) + 1) >= 50 ? -1 : 1) : (typeof options.sign === 'undefined' ? 1 : options.sign));
-      return (Math.floor(Math.random() * (max - min + 1) + min)) * options.sign;
+      return Math.floor(Math.random() * (max - min + 1) + min);
     }
   };
+  // var num = Math.floor(Math.random() * (max - min + 1) + min);
+  // options.sign = (options.sign === '$random' || options.sign === 0 ? (Math.floor(Math.random() * (100 - 1 + 1) + 1) >= 50 ? -1 : 1) : (typeof options.sign === 'undefined' ? 1 : options.sign));
+  // return (Math.floor(Math.random() * (max - min + 1) + min)) * options.sign;
 
 
   Powertools.arrayify = function (input) {
     return !Array.isArray(input) ? [input] : input;
   };
-
 
   Powertools.wait = function(ms) {
     return new Promise(function(resolve, reject) {
@@ -107,7 +122,6 @@
       date = new Date(date);
     }
 
-
     if (options.output === 'string') {
       return date.toISOString()
     } else if (options.output === 'unix') {
@@ -144,7 +158,8 @@
     if (typeof input === 'number' && !isNaN(input)) {
       return input;
     } else if (typeof input === 'string') {
-      return parseFloat(input);
+      var n = parseFloat(input)
+      return isNaN(n) ? 1 : n;
     } else if (typeof input === 'undefined' || input == null) {
       return 0;
     } else if (typeof input === 'object') {
