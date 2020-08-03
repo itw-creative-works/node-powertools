@@ -27,33 +27,41 @@
 
   };
 
-  Powertools.random = function (min, max, options) {
-    options = options || {};
-    options.mode = options.mode || 'gaussian';
-    if (Array.isArray(min)) {
-      return min[Math.floor(Math.random() * min.length)];
+  Powertools.random = function (arg1, arg2, arg3) {
+    var isArray = Array.isArray(arg1);
+    var min, max, options, result;
+    if (isArray) {
+      min = 0;
+      max = arg1.length - 1;
+      options = arg2 || {};
+    } else {
+      min = arg1;
+      max = arg2;
+      options = arg3 || {};
+    }
+
+    if (!options.mode || options.mode === 'uniform') {
+      result = Math.floor(Math.random() * (max - min + 1) + min);
     } else if (options.mode === 'gaussian') {
-      var rand = 0;
+      result = 0;
       options.samples = options.samples || 3;
 
       for (var i = 0; i < options.samples; i++) {
-        rand += Math.random() + (options.flux || 0);
+        result += Math.random() + (options.flux || 0);
       }
 
-      rand = rand / options.samples;
-      rand = Math.floor(min + rand * (max - min + 1));
-      rand = rand < min ? min : rand;
-      rand = rand > max ? max : rand;
+      result = result / options.samples;
+      result = Math.floor(min + result * (max - min + 1));
+      result = result < min ? min : result;
+      result = result > max ? max : result;
+    }
 
-      return rand;
+    if (isArray) {
+      return arg1[result]
     } else {
-      return Math.floor(Math.random() * (max - min + 1) + min);
+      return result;
     }
   };
-  // var num = Math.floor(Math.random() * (max - min + 1) + min);
-  // options.sign = (options.sign === '$random' || options.sign === 0 ? (Math.floor(Math.random() * (100 - 1 + 1) + 1) >= 50 ? -1 : 1) : (typeof options.sign === 'undefined' ? 1 : options.sign));
-  // return (Math.floor(Math.random() * (max - min + 1) + min)) * options.sign;
-
 
   Powertools.arrayify = function (input) {
     return !Array.isArray(input) ? [input] : input;
