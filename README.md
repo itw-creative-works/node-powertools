@@ -46,12 +46,12 @@ const powertools = require('node-powertools');
 ### powertools.random(min, max, options)
 
 Generate a random number between two numbers `min` and `max`. You can use `options` to supply a sign or randomize the sign as well. If an array is supplied, a random element from the array is returned.
-The default `options.mode` is `gaussian` but you can also supply `uniform`.
+The default `options.mode` is `uniform` but you can also supply `gaussian` which will generate random values on a gaussian bell curve.
 ```js
-powertools.random(0, 100, {mode: 'gaussian'}); // Output: 69
-powertools.random(-100, 100, {mode: 'gaussian'}); // Output: -69
-powertools.random(-100, 100, {mode: 'uniform'}); // Output: -69
-powertools.random(['Apple', 'Orange', 'Pear']); // Output: Orange (random element)
+powertools.random(0, 100, {mode: 'uniform'}); // Possible output: 69
+powertools.random(-100, 100, {mode: 'uniform'}); // Possible output: -69
+powertools.random(-100, 100, {mode: 'gaussian'}); // Possible output: -69
+powertools.random(['Apple', 'Orange', 'Pear']); // Possible output: Orange (random element)
 ```
 
 ### powertools.arrayify(input)
