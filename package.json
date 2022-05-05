@@ -1,6 +1,6 @@
 {
   "name": "node-powertools",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Powerful assistive functions for Node and Browser environments.",
   "main": "dist/index.js",
   "scripts": {
@@ -26,8 +26,8 @@
     "url": "https://github.com/itw-creative-works/node-powertools/issues"
   },
   "homepage": "https://itwcreativeworks.com",
-  "dependencies": {},
   "devDependencies": {
+    "fs-jetpack": "^4.3.1",
     "mocha": "^8.0.1"
   }
 }
