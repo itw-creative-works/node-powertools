@@ -25,23 +25,36 @@
   <strong>Node Powertools</strong> is an NPM module for backend and frontend developers that exposes powerful utilities and tools.
 </p>
 
-## Install
-Install with npm:
+## Node Powertools Works in Node AND browser environments
+Yes, this module works in both Node and browser environments, including compatibility with [Webpack](https://www.npmjs.com/package/webpack) and [Browserify](https://www.npmjs.com/package/browserify)!
+
+## Features
+* Useful **randomization** tools to mix things up
+* Helpful **polling** utilities to wait for variables or events
+* Powerful **regexify** and **escape** functions to go work with `RegExp`
+
+## Install Node Powertools
+### Install via npm
+Install with npm if you plan to use **Node Powertools** in a Node.js project or in the browser.
 ```shell
 npm install node-powertools
 ```
+If you plan to use `node-powertools` in a browser environment, you will probably need to use [Webpack](https://www.npmjs.com/package/webpack), [Browserify](https://www.npmjs.com/package/browserify), or a similar service to compile it.
 
-## Features
-* Useful **randomization** tools
-* Helpful **polling** utilities
-
-## Example Setup
-After installing via npm, simply `require` the library and begin enjoying the powertools 🧰.
 ```js
-// In your functions/index.js file
 const powertools = require('node-powertools');
-
 ```
+
+### Install via CDN
+Install with CDN if you plan to use **Node Powertools** only in a browser environment.
+```html
+<script src="https://cdn.jsdelivr.net/npm/node-powertools@latest/dist/index.min.js"></script>
+<script type="text/javascript">
+  var powertools = Powertools(); // The script above exposes the global variable 'Powertools'
+</script>
+```
+
+
 ## Usage
 ### powertools.random(min, max, options)
 
