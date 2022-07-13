@@ -15,7 +15,27 @@ after(() => {
  * ============
  */
 describe('Node Powertools', () => {
-  let powertools = require('../src/index.js');
+  let powertools = require('../dist/index.js');
+
+  describe('.getKeys()', () => {
+
+    describe('keys', () => {
+      // Normal
+      it('object (one key) => array (one key)', () => {
+        return assert.deepEqual(powertools.getKeys({name: 'ian'}), ['name']);
+      });
+      it('object (one key + nested) => array (one key, nested)', () => {
+        return assert.deepEqual(powertools.getKeys({name: 'ian', favorites: {color: 'red'}}), ['name', 'favorites.color']);
+      });
+
+
+      // Edge
+      it('object (empty) => array (one value + nested)', () => {
+        return assert.deepEqual(powertools.getKeys({}), []);
+      });
+    });
+
+  });
 
   describe('.force()', () => {
 

@@ -141,6 +141,21 @@ powertools.force('1,2,3', 'array'); // Output: ['1', '2', '3']
 powertools.force('1,2,3', 'array', {force: 'number'}); // Output: [1, 2, 3]
 ```
 
+### powertools.getKeys(obj)
+Walk through any `obj` and get an array of every key, including nested keys.
+```js
+powertools.getKeys({}); // Output: []
+powertools.getKeys({name: 'Jon Snow'}); // Output: ['name']
+powertools.getKeys({name: 'Jon Snow', favorites: {color: 'red'}}); // Output: ['name', 'favorites.color']
+```
+
+### powertools.isObject(obj)
+Check if `obj` is a good ol... object. In JavaScript, `null` is, unfortunately, considered an object.
+```js
+powertools.isObject({}); // Output: true
+powertools.isObject(null); // Output: false
+```
+
 ## Final Words
 If you are still having difficulty, we would love for you to post a question to [the Node Powertools issues page](https://github.com/itw-creative-works/node-powertools/issues). It is much easier to answer questions that include your code and relevant files! So if you can provide them, we'd be extremely grateful (and more likely to help you find the answer!)
 

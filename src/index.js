@@ -67,7 +67,7 @@
     return !Array.isArray(input) ? [input] : input;
   };
 
-  Powertools.wait = function(ms) {
+  Powertools.wait = function (ms) {
     return new Promise(function(resolve, reject) {
       setInterval(function() {
         resolve();
@@ -75,7 +75,7 @@
     });
   }
 
-  Powertools.poll = function(fn, options) {
+  Powertools.poll = function (fn, options) {
     options = options || {};
     options.interval = options.interval || 100;
 
@@ -106,11 +106,11 @@
     });
   }
 
-  Powertools.escape = function(s) {
+  Powertools.escape = function (s) {
     return (s + '').replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
   };
 
-  Powertools.regexify = function(regex) {
+  Powertools.regexify = function (regex) {
     if (typeof regex === 'string') {
       var flags = regex.replace(/.*\/([gimy]*)$/, '$1');
       var pattern = regex.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
@@ -119,7 +119,7 @@
     return regex;
   };
 
-  Powertools.timestamp = function(input, options) {
+  Powertools.timestamp = function (input, options) {
     options = options || {};
     options.output = (options.output || 'string').toLowerCase();
     var date = input || new Date();
@@ -139,8 +139,7 @@
     }
   };
 
-
-  Powertools.force = function(input, type, options) {
+  Powertools.force = function (input, type, options) {
     if (type === 'string') {
       return forceString(input);
     } else if (type === 'number') {
@@ -151,6 +150,33 @@
       return forceArray(input, options);
     }
   };
+
+  // https://stackoverflow.com/a/32143089
+  Powertools.getKeys = function (obj, prefix) {
+    return getKeys(obj, prefix)
+  };
+
+  Powertools.isObject =  function (o) {
+    return isObject(o);
+  };
+
+  // Helpers
+  function getKeys(obj, prefix) {
+    var keys = Object.keys(obj);
+    prefix = prefix ? prefix + '.' : '';
+    return keys.reduce(function (result, key) {
+      if (isObject(obj[key])) {
+        result = result.concat(getKeys(obj[key], prefix + key));
+      } else {
+        result.push(prefix + key);
+      }
+      return result;
+    }, []);
+  }
+
+  function isObject(o) {
+    return Object.prototype.toString.call(o) === '[object Object]';
+  }
 
   function forceString(input) {
     if (typeof input === 'string') {

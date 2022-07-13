@@ -1,10 +1,10 @@
 {
   "name": "node-powertools",
-  "version": "0.0.14",
+  "version": "0.0.16",
   "description": "Powerful assistive functions for Node and Browser environments.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha test/ --recursive --timeout=10000",
+    "test": "npm run prepare && ./node_modules/mocha/bin/mocha test/ --recursive --timeout=10000",
     "prepare": "node -e 'require(`prepare-package`)'"
   },
   "engines": {
