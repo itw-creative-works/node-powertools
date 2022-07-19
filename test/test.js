@@ -1,3 +1,4 @@
+const package = require('../package.json');
 const assert = require('assert');
 
 beforeEach(() => {
@@ -14,7 +15,7 @@ after(() => {
  *  Test Cases
  * ============
  */
-describe('Node Powertools', () => {
+describe(`${package.name}`, () => {
   let powertools = require('../dist/index.js');
 
   describe('.getKeys()', () => {
