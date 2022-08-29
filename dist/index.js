@@ -69,7 +69,7 @@
 
   Powertools.wait = function (ms) {
     return new Promise(function(resolve, reject) {
-      setInterval(function() {
+      setTimeout(function() {
         resolve();
       }, ms || 1);
     });
