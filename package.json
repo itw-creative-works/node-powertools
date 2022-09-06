@@ -28,6 +28,6 @@
   "homepage": "https://itwcreativeworks.com",
   "devDependencies": {
     "mocha": "^8.4.0",
-    "prepare-package": "^0.0.13"
+    "prepare-package": "^0.0.16"
   }
 }
