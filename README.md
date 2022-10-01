@@ -86,7 +86,7 @@ await powertools.wait(1000); // waits for 1000 ms (1 second)
 Asynchronously wait for the specified `fn` to return `true`. You can use `options` to supply a polling interval and timeout in milliseconds. The promise **rejects** if the timeout is reached.
 ```js
 // Call this function every 100 ms until it returns true or 30000 ms passes
-await powertools.poll(function () {
+await powertools.poll(function (index) {
   return something === somethingElse;
 }, {interval: 100, timeout: 30000});
 ```
