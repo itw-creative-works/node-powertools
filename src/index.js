@@ -104,6 +104,10 @@
         }
       })();
     });
+  }  
+
+  Powertools.queue = function (fn) {
+    return new FunctionQueue(fn);
   }
 
   Powertools.escape = function (s) {
@@ -292,3 +296,51 @@
   return Powertools; // Enable if using UMD
 
 }));
+
+// FunctionQueue.js
+function FunctionQueue() {
+  var self = this;
+
+  self.queue = [];
+  self.running = false;
+}
+
+FunctionQueue.prototype.enqueue = function (fn) {
+  var self = this;
+
+  return new Promise(function (resolve, reject) {
+    self.queue.push({ 
+      function: fn, 
+      resolve: resolve, 
+      reject: reject
+    });
+
+    self.process();
+  });  
+}
+
+FunctionQueue.prototype.process = function () {
+  var self = this;
+
+  return new Promise(function (resolve, reject) {
+    if (self.running || !self.queue.length) {
+      return resolve();
+    }
+
+    self.running = true;
+    var current = self.queue.shift();
+
+    current
+      .function()
+      .then(function(result) {
+        current.resolve(result);
+      })
+      .catch(function(err) {
+        current.reject(err);
+      })
+      .finally(function() {
+        self.running = false;
+        self.process();
+      });
+  });
+}

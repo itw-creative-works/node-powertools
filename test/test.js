@@ -18,6 +18,20 @@ after(() => {
 describe(`${package.name}`, () => {
   let powertools = require('../dist/index.js');
 
+  // describe('.queue()', () => {
+
+  //   describe('queue', () => {
+  //     // Normal
+  //     it('object (one key) => array (one key)', () => {
+  //       return assert.deepEqual(powertools.getKeys({name: 'ian'}), ['name']);
+  //     });
+  //     it('object (one key + nested) => array (one key, nested)', () => {
+  //       return assert.deepEqual(powertools.getKeys({name: 'ian', favorites: {color: 'red'}}), ['name', 'favorites.color']);
+  //     });
+  //   });
+
+  // });  
+
   describe('.getKeys()', () => {
 
     describe('keys', () => {
