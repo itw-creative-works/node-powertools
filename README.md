@@ -56,7 +56,6 @@ Install with CDN if you plan to use **Node Powertools** only in a browser enviro
 
 ## Usage
 ### powertools.random(min, max, options)
-
 Generate a random number between two numbers `min` and `max`. You can use `options` to supply a sign or randomize the sign as well. If an array is supplied, a random element from the array is returned.
 The default `options.mode` is `uniform` but you can also supply `gaussian` which will generate random values on a gaussian bell curve.
 ```js
@@ -67,7 +66,6 @@ powertools.random(['Apple', 'Orange', 'Pear']); // Possible output: Orange (rand
 ```
 
 ### powertools.arrayify(input)
-
 Transform the `input` into an array if it is not already.
 ```js
 powertools.arrayify(1); // Output: [1]
@@ -75,14 +73,12 @@ powertools.arrayify([1]); // Output: [1]
 ```
 
 ### powertools.wait(time)
-
 Asynchronously wait for the specified `time` in milliseconds.
 ```js
 await powertools.wait(1000); // waits for 1000 ms (1 second)
 ```
 
 ### powertools.poll(fn, options)
-
 Asynchronously wait for the specified `fn` to return `true`. You can use `options` to supply a polling interval and timeout in milliseconds. The promise **rejects** if the timeout is reached.
 ```js
 // Call this function every 100 ms until it returns true or 30000 ms passes
@@ -91,8 +87,29 @@ await powertools.poll(function (index) {
 }, {interval: 100, timeout: 30000});
 ```
 
-### powertools.escape(str)
+### powertools.queue()
+Returns a `Queue` which you can run `.add(fn)` where `fn` is an Asynchronous function. The queue will process the functions in FIFO (first in, first out) order and will only process the next async function after the one before it resolves or rejects.
+```js
+// Call this function every 100 ms until it returns true or 30000 ms passes
+const queue = powertools.queue()
 
+// Queue the first function
+queue.add(async () => {
+  console.log('Queue 1 started');
+  await powertools.wait(1000)
+  console.log('Queue 1 finished');
+})
+
+// Queue the second function
+// This will only begin executing after the first function completes
+queue.add(async () => {
+  console.log('Queue 2 started');
+  await powertools.wait(1000)
+  console.log('Queue 2 finished');
+})
+```
+
+### powertools.escape(str)
 Add the escape character `\` before any character in `str` that needs to be escaped for a `RegExp`.
 ```js
 powertools.escape('*'); // Output: \*
@@ -102,7 +119,6 @@ powertools.escape('.$^'); // Output: \.\$\^
 ```
 
 ### powertools.regexify(str)
-
 Revive a `str` into a `RegExp`. Supports flags. Depending on how you want special characters to be treated, you can use `powertools.escape(str)` prior to using `powertools.regexify(str)`.
 ```js
 powertools.regexify('/Apple/'); // Output: RegExp /Apple/
@@ -115,7 +131,6 @@ powertools.regexify(`/${powertools.escape('Ap.le')}/`); // Output: RegExp /Ap\.l
 ```
 
 ### powertools.timestamp(date, options)
-
 Convert a `date` to a timestamp in 3 formats: an ISO `string`, a UNIX `number`, or a plain-ol' JS `Date` (as specified in `options`).
 The first argument `date`  can be a JS `Date`, a UNIX timestamp `number`, or a `string` that will be parsed by the `new Date()` method.
 ```js
@@ -129,7 +144,6 @@ powertools.timestamp(32503622400, {output: 'date'}); // Output: Tue Dec 31 2999 
 ```
 
 ### powertools.force(value, type, options)
-
 Intelligently converts a `value` to a `type` how JavaScript **should**. The acceptable types are `string`, `number`, `boolean`, `array`.
 ```js
 powertools.force(undefined, 'string'); // Output: ''

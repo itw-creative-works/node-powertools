@@ -301,15 +301,15 @@
 function FunctionQueue() {
   var self = this;
 
-  self.queue = [];
+  self.list = [];
   self.running = false;
 }
 
-FunctionQueue.prototype.enqueue = function (fn) {
+FunctionQueue.prototype.add = function (fn) {
   var self = this;
 
   return new Promise(function (resolve, reject) {
-    self.queue.push({ 
+    self.list.push({ 
       function: fn, 
       resolve: resolve, 
       reject: reject
@@ -323,12 +323,12 @@ FunctionQueue.prototype.process = function () {
   var self = this;
 
   return new Promise(function (resolve, reject) {
-    if (self.running || !self.queue.length) {
+    if (self.running || !self.list.length) {
       return resolve();
     }
 
     self.running = true;
-    var current = self.queue.shift();
+    var current = self.list.shift();
 
     current
       .function()
