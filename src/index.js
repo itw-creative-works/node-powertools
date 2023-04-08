@@ -383,10 +383,7 @@
           planDefault = {
             default: getNestedValue(defaults, key),
           }
-          // console.log('====USING DEFAULT DEFAULT====', planDefault.default);
         }
-
-        // console.log('proc', key, userSetting, planDefault);
 
         // If the user has not set a value for this setting, use the plan default
         if (typeof userSetting === 'undefined') {
@@ -401,13 +398,16 @@
         // Enforce min and max values
         workingValue = enforceMinMax(workingValue, planDefault.min, planDefault.max);
 
+        // Force to value if it is set
+        if (typeof planDefault.value !== 'undefined') {
+          workingValue = planDefault.value;
+        }
+
         setNestedValue(updatedSettings, pathMinusLast, workingValue);
-        // console.log('---SET', pathMinusLast, workingValue);
 
         alreadyDone.push(pathMinusLast);
       });
 
-    // console.log('---updatedSettings', updatedSettings);
 
     return updatedSettings;
   }

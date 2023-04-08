@@ -278,6 +278,11 @@ describe(`${package.name}`, () => {
             min: 1,
             max: 2,
           },
+          admin: {
+            types: ['boolean'],
+            default: false,
+            value: false,
+          },
         },
       },
       premium: {
@@ -357,6 +362,19 @@ describe(`${package.name}`, () => {
       assert.strictEqual(result.stats.level, defaults[planId].stats.level.max);
       assert.strictEqual(result.name, user.name.slice(0, defaults[planId].name.max));
     });
+
+    it('should enforce value constraint', () => {
+      const user = {
+        stats: {
+          admin: true,
+        },
+      };
+
+      const planId = 'basic';
+
+      const result = powertools.defaults(user, defaults[planId]);
+      assert.strictEqual(result.stats.admin, defaults[planId].stats.admin.value);
+    });    
 
     it('should work with nested properties', () => {
       const user = {
