@@ -293,6 +293,127 @@
     });
   }
 
+  function enforceValidTypes(value, types, def) {
+    var isValidType = types.some(function (type) {
+      return typeof value === type || (type === 'array' && Array.isArray(value));
+    });
+
+    return isValidType ? value : def;
+  }
+
+  function enforceMinMax(value, min, max) {
+    var isNumber = typeof value === 'number';
+    var isString = typeof value === 'string';
+
+    if (min !== undefined) {
+      if (isNumber && value < min) {
+        return min;
+      } else if (isString && value.length < min) {
+        // return value + ' '.repeat(min - value.length);
+      } else if (Array.isArray(value) && value.length < min) {
+        // return value.concat(Array(min - value.length));
+      }
+    }
+
+    if (max !== undefined) {
+      if (isNumber && value > max) {
+        return max;
+      } else if (isString && value.length > max) {
+        return value.slice(0, max);
+      } else if (Array.isArray(value) && value.length > max) {
+        return value.slice(0, max);
+      }
+    }
+
+    return value;
+  }  
+
+  function getNestedValue(obj, keyString) {
+    var keys = keyString.split('.');
+    var currentValue = obj;
+
+    for (var key of keys) {
+      if (currentValue === undefined || currentValue === null) {
+        return undefined;
+      }
+      currentValue = currentValue[key];
+    }
+
+    return currentValue;
+  }
+
+  function setNestedValue(obj, keyString, value) {
+    var keys = keyString.split('.');
+    var currentObject = obj;
+
+    for (var i = 0; i < keys.length - 1; i++) {
+      var key = keys[i];
+
+      if (typeof currentObject[key] !== 'object' || currentObject[key] === null) {
+        currentObject[key] = {};
+      }
+
+      currentObject = currentObject[key];
+    }
+
+    currentObject[keys[keys.length - 1]] = value;
+  }
+
+  Powertools.defaults = function (user, defaults) {
+    var updatedSettings = {};
+    var alreadyDone = [];
+
+    getKeys(defaults)
+      .forEach(function (key) {
+        // Get the path to this setting, minus the last key
+        var pathMinusLast = key.split('.').slice(0, -1).join('.');
+
+        // Break if we've already done this key
+        if (alreadyDone.indexOf(pathMinusLast) !== -1) {
+          // console.log('skip', key);
+          return;
+        }
+
+        // If the user has not set a value for this setting, use the plan default
+        var userSetting = getNestedValue(user, pathMinusLast);
+        var planDefault = getNestedValue(defaults, pathMinusLast);
+        var workingValue;
+        
+        if (!planDefault || typeof planDefault === 'undefined' || typeof planDefault.default === 'undefined') {
+          planDefault = {
+            default: getNestedValue(defaults, key),
+          }
+          // console.log('====USING DEFAULT DEFAULT====', planDefault.default);
+        }
+
+        // console.log('proc', key, userSetting, planDefault);
+
+        // If the user has not set a value for this setting, use the plan default
+        if (typeof userSetting === 'undefined') {
+          workingValue = planDefault.default;
+        } else {
+          workingValue = userSetting;
+        }
+
+        // Loop through acceptable types of default and set default if it is not one of them
+        workingValue = enforceValidTypes(workingValue, planDefault.types, planDefault.default);
+
+        // Enforce min and max values
+        workingValue = enforceMinMax(workingValue, planDefault.min, planDefault.max);
+
+        setNestedValue(updatedSettings, pathMinusLast, workingValue);
+        // console.log('---SET', pathMinusLast, workingValue);
+
+        alreadyDone.push(pathMinusLast);
+      });
+
+    // console.log('---updatedSettings', updatedSettings);
+
+    return updatedSettings;
+  }
+
+  // TODO: add ability to do this with plan limits, but need to have a 4th options that says "dont get X.default, just get X"
+
   return Powertools; // Enable if using UMD
 
 }));

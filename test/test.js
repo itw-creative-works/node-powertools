@@ -262,4 +262,138 @@ describe(`${package.name}`, () => {
 
   });
 
+
+  describe('defaults()', () => {
+    const defaults = {
+      basic: {
+        name: {
+          types: ['string'],
+          default: '',
+          max: 10,
+        },
+        stats: {
+          level: {
+            types: ['number'],
+            default: 1,
+            min: 1,
+            max: 2,
+          },
+        },
+      },
+      premium: {
+        name: {
+          types: ['string'],
+          default: '',
+          max: 10,
+        },
+        stats: {
+          level: {
+            types: ['number'],
+            default: 1,
+            min: 1,
+            max: 10,
+          },
+        },
+      },
+    };
+
+    it('should remove keys not defined in defaults', () => {
+      const user = {
+        name: 'John',
+        stats: {
+          level: 1,
+        },
+        unacceptable: {
+          value: 'test',
+        },
+      };
+
+      const planId = 'basic';
+
+      const result = powertools.defaults(user, defaults[planId]);
+
+      assert(!result.hasOwnProperty('unacceptable'));
+    });
+
+    it('should set default values for missing keys in user', () => {
+      const user = {};
+
+      const planId = 'basic'
+
+      const result = powertools.defaults(user, defaults[planId]);
+
+      assert.strictEqual(result.name, defaults[planId].name.default);
+      assert.strictEqual(result.stats.level, defaults[planId].stats.level.default);
+    });
+
+    it('should enforce acceptable types', () => {
+      const user = {
+        name: 123,
+        stats: {
+          level: 'invalid',
+        },
+      };
+
+      const planId = 'basic';
+
+      const result = powertools.defaults(user, defaults[planId]);
+
+      assert.strictEqual(result.name, defaults[planId].name.default);
+      assert.strictEqual(result.stats.level, defaults[planId].stats.level.default);
+    });
+
+    it('should enforce min and max constraints', () => {
+      const user = {
+        name: 'John but too long',
+        stats: {
+          level: 5,
+        },
+      };
+
+      const planId = 'basic';
+
+      const result = powertools.defaults(user, defaults[planId]);
+
+      assert.strictEqual(result.stats.level, defaults[planId].stats.level.max);
+      assert.strictEqual(result.name, user.name.slice(0, defaults[planId].name.max));
+    });
+
+    it('should work with nested properties', () => {
+      const user = {
+        name: 'John',
+        stats: {
+          level: 10,
+          invalid: 'test',
+        },
+      };
+
+      const planId = 'premium';
+
+      const result = powertools.defaults(user, defaults[planId]);
+
+      assert.strictEqual(result.name, user.name);
+      assert.strictEqual(result.stats.level, user.stats.level);
+      assert(!result.stats.hasOwnProperty('invalid'));
+    });
+
+    // it('should work without requiring strict defaults', () => {
+    //   const user = {
+    //     name: 'John',
+    //     stats: {
+    //       level: 10,
+    //       invalid: 'test',
+    //     },
+    //   };
+    //   const defaults = {
+    //     requests: 2,
+    //     devices: 1,
+    //   }
+    //   const planId = 'basic';
+
+    //   const result = powertools.defaults(user, defaults[planId]);
+    //   assert.strictEqual(result.requests, user.requests);
+    // });    
+  });
+
+
 })

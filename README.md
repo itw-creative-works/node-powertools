@@ -154,6 +154,31 @@ powertools.force('1,2,3', 'array'); // Output: ['1', '2', '3']
 powertools.force('1,2,3', 'array', {force: 'number'}); // Output: [1, 2, 3]
 ```
 
+### powertools.defaults(settings, defaults)
+Easily structure your `settings` object by validating them with a `defaults` object. This function automatically fills in any missing keys in `settings` with the corresponding key in `defaults`, removes any keys in `settings` that are not in `defaults`, and converts any values in `settings` to the same type as the corresponding key in `defaults`.
+```js
+const defaults = {
+  name: {
+    types: ['string'],
+    default: '',
+    min: 0,
+    max: 10,
+  },
+  stats: {
+    level: {
+      types: ['number'],
+      default: 1,
+      min: 1,
+      max: 2,
+    },
+  },  
+}
+powertools.defaults({}, defaults); // Output: {name: '', stats: {level: 1}}
+powertools.defaults({name: 'What a long name!'}, defaults); // Output: {name: 'What a lon', stats: {level: 1}}
+powertools.defaults({stats: {level: 3}}, defaults); // Output: {name: '', stats: {level: 2}}
+```
+```
+
 ### powertools.getKeys(obj)
 Walk through any `obj` and get an array of every key, including nested keys.
 ```js
