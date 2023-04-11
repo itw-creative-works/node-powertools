@@ -295,6 +295,10 @@
 
   function enforceValidTypes(value, types, def) {
     var isValidType = types.some(function (type) {
+      if (type === 'any') {
+        return true;
+      }
+
       return typeof value === type || (type === 'array' && Array.isArray(value));
     });
 
@@ -379,11 +383,19 @@
         var planDefault = getNestedValue(defaults, pathMinusLast);
         var workingValue;
         
+        // If the plan default is not an object, make it one
         if (!planDefault || typeof planDefault === 'undefined' || typeof planDefault.default === 'undefined') {
           planDefault = {
             default: getNestedValue(defaults, key),
           }
         }
+
+        // Set the defaults of the plan default
+        planDefault.default = typeof planDefault.default === 'undefined' ? undefined : planDefault.default;
+        planDefault.value = typeof planDefault.value === 'undefined' ? undefined : planDefault.value;
+        planDefault.types = planDefault.types || ['any'];
+        planDefault.min = planDefault.min || 0;
+        planDefault.max = planDefault.max || Infinity;
 
         // If the user has not set a value for this setting, use the plan default
         if (typeof userSetting === 'undefined') {
