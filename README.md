@@ -90,7 +90,7 @@ await powertools.poll(function (index) {
 ### powertools.queue()
 Returns a `Queue` which you can run `.add(fn)` where `fn` is an Asynchronous function. The queue will process the functions in FIFO (first in, first out) order and will only process the next async function after the one before it resolves or rejects.
 ```js
-// Call this function every 100 ms until it returns true or 30000 ms passes
+// Create the queue
 const queue = powertools.queue()
 
 // Queue the first function
@@ -171,12 +171,11 @@ const defaults = {
       min: 1,
       max: 2,
     },
-  },  
+  },
 }
 powertools.defaults({}, defaults); // Output: {name: '', stats: {level: 1}}
 powertools.defaults({name: 'What a long name!'}, defaults); // Output: {name: 'What a lon', stats: {level: 1}}
 powertools.defaults({stats: {level: 3}}, defaults); // Output: {name: '', stats: {level: 2}}
-```
 ```
 
 ### powertools.getKeys(obj)
