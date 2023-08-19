@@ -87,11 +87,16 @@ await powertools.poll(function (index) {
 }, {interval: 100, timeout: 30000});
 ```
 
-### powertools.queue()
+### powertools.queue(options)
 Returns a `Queue` which you can run `.add(fn)` where `fn` is an Asynchronous function. The queue will process the functions in FIFO (first in, first out) order and will only process the next async function after the one before it resolves or rejects.
 ```js
+// Queue options
+const options = {
+  delay: 100, // Delay between each function in milliseconds
+}
+
 // Create the queue
-const queue = powertools.queue()
+const queue = powertools.queue(options)
 
 // Queue the first function
 queue.add(async () => {

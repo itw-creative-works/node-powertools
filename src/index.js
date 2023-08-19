@@ -104,7 +104,7 @@
         }
       })();
     });
-  }  
+  }
 
   Powertools.queue = function (fn) {
     return new FunctionQueue(fn);
@@ -330,7 +330,7 @@
     }
 
     return value;
-  }  
+  }
 
   function getNestedValue(obj, keyString) {
     var keys = keyString.split('.');
@@ -382,7 +382,7 @@
         var userSetting = getNestedValue(user, pathMinusLast);
         var planDefault = getNestedValue(defaults, pathMinusLast);
         var workingValue;
-        
+
         // If the plan default is not an object, make it one
         if (!planDefault || typeof planDefault === 'undefined' || typeof planDefault.default === 'undefined') {
           planDefault = {
@@ -431,9 +431,15 @@
 }));
 
 // FunctionQueue.js
-function FunctionQueue() {
+function FunctionQueue(options) {
   var self = this;
 
+  // Default options
+  options = options || {};
+  options.delay = typeof options.delay === 'undefined' ? 0 : options.delay;
+
+  // Properties
+  self.options = options;
   self.list = [];
   self.running = false;
 }
@@ -442,14 +448,14 @@ FunctionQueue.prototype.add = function (fn) {
   var self = this;
 
   return new Promise(function (resolve, reject) {
-    self.list.push({ 
-      function: fn, 
-      resolve: resolve, 
+    self.list.push({
+      function: fn,
+      resolve: resolve,
       reject: reject
     });
 
     self.process();
-  });  
+  });
 }
 
 FunctionQueue.prototype.process = function () {
@@ -463,17 +469,25 @@ FunctionQueue.prototype.process = function () {
     self.running = true;
     var current = self.list.shift();
 
-    current
-      .function()
-      .then(function(result) {
-        current.resolve(result);
-      })
-      .catch(function(err) {
-        current.reject(err);
-      })
-      .finally(function() {
-        self.running = false;
-        self.process();
-      });
+    function _process() {
+      current
+        .function()
+        .then(function(result) {
+          current.resolve(result);
+        })
+        .catch(function(err) {
+          current.reject(err);
+        })
+        .finally(function() {
+          self.running = false;
+          self.process();
+        });
+    }
+
+    if (self.options.delay) {
+      setTimeout(_process, self.options.delay);
+    } else {
+      _process();
+    }
   });
 }
