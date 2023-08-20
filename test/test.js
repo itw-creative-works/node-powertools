@@ -280,7 +280,7 @@ describe(`${package.name}`, () => {
             types: ['number'],
             default: 1,
             min: 1,
-            max: 2,
+            max: 10,
           },
           admin: {
             types: ['boolean'],
@@ -348,7 +348,7 @@ describe(`${package.name}`, () => {
       assert.strictEqual(result.preference, undefined);
     });
 
-    it('should enforce acceptable types', () => {
+    it('should disallow unacceptable types', () => {
       const user = {
         name: 123,
         stats: {
@@ -360,15 +360,29 @@ describe(`${package.name}`, () => {
 
       const result = powertools.defaults(user, defaults[planId]);
 
-      assert.strictEqual(result.name, defaults[planId].name.default);
+      assert.strictEqual(result.name, `${user.name}`);
       assert.strictEqual(result.stats.level, defaults[planId].stats.level.default);
+    });
+
+    it('should enforce acceptable types', () => {
+      const user = {
+        stats: {
+          level: '3',
+        },
+      };
+
+      const planId = 'basic';
+
+      const result = powertools.defaults(user, defaults[planId]);
+      assert.strictEqual(typeof result.stats.level, typeof defaults[planId].stats.level.default);
+      assert.strictEqual(result.stats.level, parseInt(user.stats.level));
     });
 
     it('should enforce min and max constraints', () => {
       const user = {
         name: 'John but too long',
         stats: {
-          level: 5,
+          level: 50,
         },
       };
 

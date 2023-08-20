@@ -144,15 +144,7 @@
   };
 
   Powertools.force = function (input, type, options) {
-    if (type === 'string') {
-      return forceString(input);
-    } else if (type === 'number') {
-      return forceNumber(input);
-    } else if (type === 'boolean') {
-      return forceBoolean(input);
-    } else if (type === 'array') {
-      return forceArray(input, options);
-    }
+    return forceType(input, type, options);
   };
 
   // https://stackoverflow.com/a/32143089
@@ -205,6 +197,20 @@
       else stack.push(value)
 
       return replacer == null ? value : replacer.call(this, key, value)
+    }
+  }
+
+  function forceType(input, type, options) {
+    if (type === 'string') {
+      return forceString(input);
+    } else if (type === 'number') {
+      return forceNumber(input);
+    } else if (type === 'boolean') {
+      return forceBoolean(input);
+    } else if (type === 'array') {
+      return forceArray(input, options);
+    } else if (type === 'undefined') {
+      return undefined;
     }
   }
 
@@ -302,6 +308,12 @@
       return typeof value === type || (type === 'array' && Array.isArray(value));
     });
 
+    // If only one type is allowed, force it
+    if (types.length === 1 && types[0] !== 'any') {
+      return isValidType ? value : forceType(value, types[0]);
+    }
+
+    // If multiple types are allowed, return the value if it is valid type, otherwise return the default
     return isValidType ? value : def;
   }
 
