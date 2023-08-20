@@ -384,7 +384,7 @@
         var workingValue;
 
         // If the plan default is not an object, make it one
-        if (!planDefault || typeof planDefault === 'undefined' || typeof planDefault.default === 'undefined') {
+        if (!planDefault || typeof planDefault === 'undefined') {
           planDefault = {
             default: getNestedValue(defaults, key),
           }

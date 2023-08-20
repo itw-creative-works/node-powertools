@@ -37,7 +37,7 @@ describe(`${package.name}`, () => {
       });
     });
 
-  });  
+  });
 
   describe('.getKeys()', () => {
 
@@ -271,6 +271,10 @@ describe(`${package.name}`, () => {
           default: '',
           max: 10,
         },
+        preference: {
+          types: ['string', 'undefined'],
+          default: undefined,
+        },
         stats: {
           level: {
             types: ['number'],
@@ -302,6 +306,19 @@ describe(`${package.name}`, () => {
       },
     };
 
+    it('should fill in unset values', () => {
+      const user = {
+      };
+
+      const planId = 'basic';
+
+      const result = powertools.defaults(user, defaults[planId]);
+
+      assert.strictEqual(result.name, defaults[planId].name.default);
+      assert.strictEqual(result.stats.level, defaults[planId].stats.level.default);
+      assert.strictEqual(result.stats.admin, defaults[planId].stats.admin.default);
+    });
+
     it('should remove keys not defined in defaults', () => {
       const user = {
         name: 'John',
@@ -320,15 +337,15 @@ describe(`${package.name}`, () => {
       assert(!result.hasOwnProperty('unacceptable'));
     });
 
-    it('should set default values for missing keys in user', () => {
-      const user = {};
+    it('should allow undefined values', () => {
+      const user = {
+      };
 
-      const planId = 'basic'
+      const planId = 'basic';
 
       const result = powertools.defaults(user, defaults[planId]);
 
-      assert.strictEqual(result.name, defaults[planId].name.default);
-      assert.strictEqual(result.stats.level, defaults[planId].stats.level.default);
+      assert.strictEqual(result.preference, undefined);
     });
 
     it('should enforce acceptable types', () => {
@@ -374,7 +391,7 @@ describe(`${package.name}`, () => {
 
       const result = powertools.defaults(user, defaults[planId]);
       assert.strictEqual(result.stats.admin, defaults[planId].stats.admin.value);
-    });    
+    });
 
     it('should work with nested properties', () => {
       const user = {
@@ -410,7 +427,7 @@ describe(`${package.name}`, () => {
 
     //   const result = powertools.defaults(user, defaults[planId]);
     //   assert.strictEqual(result.requests, user.requests);
-    // });    
+    // });
   });
 
 
