@@ -295,6 +295,10 @@ describe(`${package.name}`, () => {
           default: '',
           max: 10,
         },
+        preference: {
+          types: ['string', 'undefined'],
+          default: undefined,
+        },
         stats: {
           level: {
             types: ['number'],
