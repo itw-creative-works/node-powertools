@@ -262,6 +262,21 @@ describe(`${package.name}`, () => {
 
   });
 
+  describe('.template()', () => {
+
+    describe('template', () => {
+      // Normal
+      it('string (one key) => string (one key)', () => {
+        return assert.deepEqual(powertools.template('My favorite color is {color}', {color: 'purple'}), 'My favorite color is purple');
+      });
+
+      // Normal
+      it('string (nested key) => string (nested key)', () => {
+        return assert.deepEqual(powertools.template('My favorite color is {ian.color}', {ian: {color: 'purple'}}), 'My favorite color is purple');
+      });
+    });
+
+  });
 
   describe('defaults()', () => {
     const defaults = {

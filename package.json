@@ -1,6 +1,6 @@
 {
   "name": "node-powertools",
-  "version": "1.0.10",
+  "version": "1.1.0",
   "description": "Powerful assistive functions for Node and Browser environments.",
   "main": "dist/index.js",
   "scripts": {

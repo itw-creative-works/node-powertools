@@ -160,6 +160,12 @@
     return JSON.stringify(obj, serializer(replacer, cycleReplacer), spaces);
   };
 
+  Powertools.template =  function (string, template) {
+    return string.replace(/\{([\w\s\.]*)\}/g, function (match, key) {
+      return getNestedValue(template, key);
+    });
+  };
+
   // Helpers
   function getKeys(obj, prefix) {
     var keys = Object.keys(obj);
