@@ -198,6 +198,31 @@ powertools.isObject({}); // Output: true
 powertools.isObject(null); // Output: false
 ```
 
+### powertools.stringify(obj)
+Stringify an `obj` into a JSON string even if it has circular references.
+```js
+powertools.strigify({}); // Output: '{}'
+```
+
+### powertools.template(str, data)
+Replace all instances of `{key}` in `str` with the corresponding value in `data`.
+```js
+powertools.uniquify(
+  'My favorite color is {color}',
+  {color: 'purple'}
+); // Output: 'My favorite color is purple'
+powertools.uniquify(
+  'Ian\'s favorite color is {ian.color}',
+  {ian: {color: 'purple'}
+); // Output: 'Ian\'s favorite color is purple'
+```
+
+### powertools.uniquify(arr)
+Return an array with all duplicates removed.
+```js
+powertools.uniquify([{id: 1}, {id: 1}, {id: 2}]); // Output: [{id: 1}, {id: 2}]
+```
+
 ## Final Words
 If you are still having difficulty, we would love for you to post a question to [the Node Powertools issues page](https://github.com/itw-creative-works/node-powertools/issues). It is much easier to answer questions that include your code and relevant files! So if you can provide them, we'd be extremely grateful (and more likely to help you find the answer!)
 

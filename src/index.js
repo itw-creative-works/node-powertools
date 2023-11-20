@@ -152,18 +152,22 @@
     return getKeys(obj, prefix)
   };
 
-  Powertools.isObject =  function (o) {
+  Powertools.isObject = function (o) {
     return isObject(o);
   };
 
-  Powertools.stringify =  function (obj, replacer, spaces, cycleReplacer) {
+  Powertools.stringify = function (obj, replacer, spaces, cycleReplacer) {
     return JSON.stringify(obj, serializer(replacer, cycleReplacer), spaces);
   };
 
-  Powertools.template =  function (string, template) {
+  Powertools.template = function (string, template) {
     return string.replace(/\{([\w\s\.]*)\}/g, function (match, key) {
       return getNestedValue(template, key);
     });
+  };
+
+  Powertools.uniquify = function (input) {
+    return Array.from(new Set(input.map(JSON.stringify))).map(JSON.parse);
   };
 
   // Helpers
