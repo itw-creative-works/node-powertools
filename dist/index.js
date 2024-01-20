@@ -162,7 +162,14 @@
 
   Powertools.template = function (string, template) {
     return string.replace(/\{([\w\s\.]*)\}/g, function (match, key) {
-      return getNestedValue(template, key);
+      var value = getNestedValue(template, key);
+
+      // If object, return JSON
+      if (typeof value === 'object') {
+        return JSON.stringify(value);
+      } else {
+        return value;
+      }
     });
   };
 

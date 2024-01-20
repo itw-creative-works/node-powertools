@@ -176,6 +176,9 @@ const defaults = {
       min: 1,
       max: 2,
     },
+    index: {
+      value: 1,
+    },
   },
 }
 powertools.defaults({}, defaults); // Output: {name: '', stats: {level: 1}}

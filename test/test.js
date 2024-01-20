@@ -266,13 +266,18 @@ describe(`${package.name}`, () => {
 
     describe('template', () => {
       // Normal
-      it('string (one key) => string (one key)', () => {
+      it('string (one key)', () => {
         return assert.deepEqual(powertools.template('My favorite color is {color}', {color: 'purple'}), 'My favorite color is purple');
       });
 
       // Normal
-      it('string (nested key) => string (nested key)', () => {
+      it('string (nested key)', () => {
         return assert.deepEqual(powertools.template('My favorite color is {ian.color}', {ian: {color: 'purple'}}), 'My favorite color is purple');
+      });
+
+      // Object
+      it('string (object key)', () => {
+        return assert.deepEqual(powertools.template('Expanded object: {settings}', {settings: {color: 'purple'}}), 'Expanded object: {"color":"purple"}');
       });
     });
 
