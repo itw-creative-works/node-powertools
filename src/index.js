@@ -111,7 +111,7 @@
   }
 
   Powertools.escape = function (s) {
-    return (s + '').replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    return (s + '').replace(/[-\/\\^$*+?'`<>!#%&.;()|[\]{}]/g, '\\$&');
   };
 
   Powertools.regexify = function (regex) {
