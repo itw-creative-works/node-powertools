@@ -149,18 +149,26 @@ powertools.timestamp(32503622400, {output: 'date'}); // Output: Tue Dec 31 2999 
 ```
 
 ### powertools.force(value, type, options)
-Intelligently converts a `value` to a `type` how JavaScript **should**. The acceptable types are `string`, `number`, `boolean`, `array`.
+Intelligently converts a `value` to a `type` how JavaScript **should**. The acceptable types are `string`, `number`, `boolean`, `array`. This is useful for helping to validate user input, such as considering `'true'` (string) to be `true` (boolean) or `'0'` (string of a number) to be `false` (boolean).
 ```js
-powertools.force(undefined, 'string'); // Output: ''
 powertools.force('true', 'boolean'); // Output: true
 powertools.force('false', 'boolean'); // Output: false
 powertools.force('0', 'boolean'); // Output: false
 powertools.force('1,2,3', 'array'); // Output: ['1', '2', '3']
 powertools.force('1,2,3', 'array', {force: 'number'}); // Output: [1, 2, 3]
+powertools.force(undefined, 'string'); // Output: ''
 ```
 
 ### powertools.defaults(settings, defaults)
 Easily structure your `settings` object by validating them with a `defaults` object. This function automatically fills in any missing keys in `settings` with the corresponding key in `defaults`, removes any keys in `settings` that are not in `defaults`, and converts any values in `settings` to the same type as the corresponding key in `defaults`.
+
+#### How to Define Defaults
+- `types`: An array of valid types for the value.
+- `default`: Any value that will be used if the key is missing.
+- `min`: A number limiting the minimum value if the value is a number, or the minimum length if the value is a string.
+- `max`: A number limiting the maximum value if the value is a number, or the maximum length if the value is a
+- `value`: Any value that will override the value in `settings` regardless of what it is (force the value).
+
 ```js
 const defaults = {
   name: {
@@ -189,13 +197,13 @@ powertools.defaults({stats: {level: 3}}, defaults); // Output: {name: '', stats:
 ### powertools.getKeys(obj)
 Walk through any `obj` and get an array of every key, including nested keys.
 ```js
-powertools.getKeys({}); // Output: []
 powertools.getKeys({name: 'Jon Snow'}); // Output: ['name']
 powertools.getKeys({name: 'Jon Snow', favorites: {color: 'red'}}); // Output: ['name', 'favorites.color']
+powertools.getKeys({}); // Output: []
 ```
 
 ### powertools.isObject(obj)
-Check if `obj` is a good ol... object. In JavaScript, `null` is, unfortunately, considered an object.
+Check if `obj` is a good ol... object. In JavaScript, `null` is, unfortunately, considered an object. This function does not consider `null` to be an object.
 ```js
 powertools.isObject({}); // Output: true
 powertools.isObject(null); // Output: false
@@ -210,11 +218,11 @@ powertools.strigify({}); // Output: '{}'
 ### powertools.template(str, data)
 Replace all instances of `{key}` in `str` with the corresponding value in `data`.
 ```js
-powertools.uniquify(
+powertools.template(
   'My favorite color is {color}',
   {color: 'purple'}
 ); // Output: 'My favorite color is purple'
-powertools.uniquify(
+powertools.template(
   'Ian\'s favorite color is {ian.color}',
   {ian: {color: 'purple'}
 ); // Output: 'Ian\'s favorite color is purple'
