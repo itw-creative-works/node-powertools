@@ -177,6 +177,12 @@
     return Array.from(new Set(input.map(JSON.stringify))).map(JSON.parse);
   };
 
+  Powertools.iterate = function(array, callback) {
+    return array.reduce(function (promise, item, index) {
+      return promise.then(function () {return callback(item, index, array)});
+    }, Promise.resolve());
+  };
+
   // Helpers
   function getKeys(obj, prefix) {
     var keys = Object.keys(obj);

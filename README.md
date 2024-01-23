@@ -229,9 +229,29 @@ powertools.template(
 ```
 
 ### powertools.uniquify(arr)
-Return an array with all duplicates removed.
+Return an array `arr` with all duplicates removed.
 ```js
 powertools.uniquify([{id: 1}, {id: 1}, {id: 2}]); // Output: [{id: 1}, {id: 2}]
+```
+
+### powertools.iterate(arr, callback)
+Asynchronously iterate through an array `arr` and call `callback` on each element. This function is useful for when you need to wait for asynchronous functions to complete before moving on to the next element in the array.
+```js
+const sampleArray = [1, 2, 3, 4, 5];
+
+// Simulate an async operation like a database call
+const asyncTask = (item, index) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log(`Processing item ${item} at index ${index}`);
+      return resolve();
+    }, 1000);
+  });
+};
+
+// Process each item in the array asynchronously
+Powertools.iterate(sampleArray, asyncTask)
+  .then(() => console.log('All tasks completed.'));
 ```
 
 ## Final Words
