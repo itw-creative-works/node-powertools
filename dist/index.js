@@ -398,11 +398,11 @@
     currentObject[keys[keys.length - 1]] = value;
   }
 
-  Powertools.defaults = function (user, defaults) {
+  Powertools.defaults = function (user, schema) {
     var updatedSettings = {};
     var alreadyDone = [];
 
-    getKeys(defaults)
+    getKeys(schema)
       .forEach(function (key) {
         // Get the path to this setting, minus the last key
         var pathMinusLast = key.split('.').slice(0, -1).join('.');
@@ -415,39 +415,47 @@
 
         // If the user has not set a value for this setting, use the plan default
         var userSetting = getNestedValue(user, pathMinusLast);
-        var planDefault = getNestedValue(defaults, pathMinusLast);
+        var schemaDefault = getNestedValue(schema, pathMinusLast);
         var workingValue;
 
         // If the plan default is not an object, make it one
-        if (!planDefault || typeof planDefault === 'undefined') {
-          planDefault = {
-            default: getNestedValue(defaults, key),
+        if (!schemaDefault || typeof schemaDefault === 'undefined') {
+          schemaDefault = {
+            default: getNestedValue(schema, key),
           }
         }
 
-        // Set the defaults of the plan default
-        planDefault.default = typeof planDefault.default === 'undefined' ? undefined : planDefault.default;
-        planDefault.value = typeof planDefault.value === 'undefined' ? undefined : planDefault.value;
-        planDefault.types = planDefault.types || ['any'];
-        planDefault.min = planDefault.min || 0;
-        planDefault.max = planDefault.max || Infinity;
+        // Set the schema of the plan default
+        schemaDefault.types = schemaDefault.types || ['any'];
+        schemaDefault.value = typeof schemaDefault.value === 'undefined' ? undefined : schemaDefault.value;
+        schemaDefault.default = typeof schemaDefault.default === 'undefined' ? undefined : schemaDefault.default;
+        schemaDefault.min = schemaDefault.min || 0;
+        schemaDefault.max = schemaDefault.max || Infinity;
+
+        // Run functions
+        if (typeof schemaDefault.value === 'function') {
+          schemaDefault.value = schemaDefault.value();
+        }
+        if (typeof schemaDefault.default === 'function') {
+          schemaDefault.default = schemaDefault.default();
+        }
 
         // If the user has not set a value for this setting, use the plan default
         if (typeof userSetting === 'undefined') {
-          workingValue = planDefault.default;
+          workingValue = schemaDefault.default;
         } else {
           workingValue = userSetting;
         }
 
         // Loop through acceptable types of default and set default if it is not one of them
-        workingValue = enforceValidTypes(workingValue, planDefault.types, planDefault.default);
+        workingValue = enforceValidTypes(workingValue, schemaDefault.types, schemaDefault.default);
 
         // Enforce min and max values
-        workingValue = enforceMinMax(workingValue, planDefault.min, planDefault.max);
+        workingValue = enforceMinMax(workingValue, schemaDefault.min, schemaDefault.max);
 
         // Force to value if it is set
-        if (typeof planDefault.value !== 'undefined') {
-          workingValue = planDefault.value;
+        if (typeof schemaDefault.value !== 'undefined') {
+          workingValue = schemaDefault.value;
         }
 
         setNestedValue(updatedSettings, pathMinusLast, workingValue);

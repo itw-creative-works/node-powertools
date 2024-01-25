@@ -295,6 +295,10 @@ describe(`${package.name}`, () => {
           types: ['string', 'undefined'],
           default: undefined,
         },
+        time: {
+          types: ['string'],
+          default: () => '2999-01-01T00:00:00.000Z',
+        },
         stats: {
           level: {
             types: ['number'],
@@ -318,6 +322,10 @@ describe(`${package.name}`, () => {
         preference: {
           types: ['string', 'undefined'],
           default: undefined,
+        },
+        time: {
+          types: ['string'],
+          value: () => '2999-01-01T00:00:00.000Z',
         },
         stats: {
           level: {
@@ -447,6 +455,18 @@ describe(`${package.name}`, () => {
       assert.strictEqual(result.name, user.name);
       assert.strictEqual(result.stats.level, user.stats.level);
       assert(!result.stats.hasOwnProperty('invalid'));
+    });
+
+    it('should work with functions', () => {
+      const user = {
+        time: '2999-01-01T00:00:00.000Z',
+      };
+
+      const planId = 'premium';
+
+      const result = powertools.defaults(user, defaults[planId]);
+
+      assert.strictEqual(result.time, user.time);
     });
 
     // it('should work without requiring strict defaults', () => {
