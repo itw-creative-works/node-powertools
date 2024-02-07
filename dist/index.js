@@ -161,6 +161,10 @@
   };
 
   Powertools.template = function (string, template) {
+    if (!string) {
+      throw new Error('No string provided');
+    }
+
     return string.replace(/\{([\w\s\.]*)\}/g, function (match, key) {
       var value = getNestedValue(template, key);
 
