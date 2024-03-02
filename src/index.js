@@ -160,13 +160,13 @@
     return JSON.stringify(obj, serializer(replacer, cycleReplacer), spaces);
   };
 
-  Powertools.template = function (string, template) {
-    if (!string) {
+  Powertools.template = function (input, settings) {
+    if (typeof input !== 'string') {
       throw new Error('No string provided');
     }
 
-    return string.replace(/\{([\w\s\.]*)\}/g, function (match, key) {
-      var value = getNestedValue(template, key);
+    return input.replace(/\{([\w\s\.]*)\}/g, function (match, key) {
+      var value = getNestedValue(settings, key);
 
       // If object, return JSON
       if (typeof value === 'object') {
