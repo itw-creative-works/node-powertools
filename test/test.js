@@ -39,6 +39,29 @@ describe(`${package.name}`, () => {
 
   });
 
+  describe('.getPromiseState()', () => {
+    describe('promise', () => {
+      // Normal
+      it('promise (pending) => string (pending)', () => {
+        return assert.equal(powertools.getPromiseState(new Promise(() => {})), 'pending');
+      });
+      it('promise (resolved) => string (resolved)', () => {
+        return assert.equal(powertools.getPromiseState(Promise.resolve('Hello, World!')), 'resolved');
+      });
+      it('promise (rejected) => string (rejected)', () => {
+        return assert.equal(powertools.getPromiseState(Promise.reject('Hello, World!')), 'rejected');
+      });
+
+      // Edge
+      it('promise (empty) => string (resolved)', () => {
+        // should pass if getPromiseState throws an error
+        return assert.throws(() => {
+          powertools.getPromiseState();
+        });
+      });
+    });
+  });
+
   describe('.getKeys()', () => {
 
     describe('keys', () => {

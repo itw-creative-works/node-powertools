@@ -23,6 +23,10 @@
     }
   }
 
+  // Libraries
+  var util;
+
+  // Main
   function Powertools(options) {
 
   };
@@ -106,8 +110,34 @@
     });
   }
 
-  Powertools.queue = function (fn) {
-    return new FunctionQueue(fn);
+  // https://github.com/sindresorhus/p-state/blob/main/index.js
+  Powertools.getPromiseState = function (promise) {
+    util = util || require('util');
+
+    if (!(typeof promise === 'object' && typeof promise.then === 'function')) {
+      throw new TypeError(`Expected a promise, got ${typeof promise}`);
+    }
+
+    var inspectedString = util.inspect(promise, {
+      depth: 0,
+      showProxy: false,
+      maxStringLength: 0,
+      breakLength: Number.POSITIVE_INFINITY,
+    });
+
+    if (inspectedString.startsWith('Promise { <pending>')) {
+      return 'pending';
+    }
+
+    if (inspectedString.startsWith('Promise { <rejected>')) {
+      return 'rejected';
+    }
+
+    return 'resolved';
+  }
+
+  Powertools.queue = function (options) {
+    return new FunctionQueue(options);
   }
 
   Powertools.escape = function (s) {

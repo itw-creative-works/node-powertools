@@ -114,6 +114,22 @@ queue.add(async () => {
 })
 ```
 
+### powertools.getPromiseState(promise)
+Returns `pending`, `resolved`, or `rejected` based on the state of the `promise`. This is useful for checking if a promise has been resolved or rejected.
+
+This method depends on `util` from Node.js, so it will not work in the browser.
+```js
+const promise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('done');
+  }, 1000);
+});
+
+powertools.getPromiseState(promise); // Output: 'pending'
+await promise;
+powertools.getPromiseState(promise); // Output: 'resolved'
+```
+
 ### powertools.escape(str)
 Add the escape character `\` before any character in `str` that needs to be escaped for a `RegExp`.
 ```js
