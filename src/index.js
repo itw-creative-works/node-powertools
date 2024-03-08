@@ -106,8 +106,8 @@
     });
   }
 
-  Powertools.queue = function (fn) {
-    return new FunctionQueue(fn);
+  Powertools.queue = function (options) {
+    return new FunctionQueue(options);
   }
 
   Powertools.escape = function (s) {
