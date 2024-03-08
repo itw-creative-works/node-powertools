@@ -112,6 +112,7 @@
 
   // https://github.com/sindresorhus/p-state/blob/main/index.js
   // https://stackoverflow.com/questions/30564053/how-can-i-synchronously-determine-a-javascript-promises-state
+  // https://dev.to/xnimorz/101-series-promises-2-how-to-get-current-promise-status-and-build-your-own-promise-queue-18j8
   Powertools.getPromiseState = function (promise) {
     util = util || require('util');
 
