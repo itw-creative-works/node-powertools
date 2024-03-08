@@ -111,6 +111,7 @@
   }
 
   // https://github.com/sindresorhus/p-state/blob/main/index.js
+  // https://stackoverflow.com/questions/30564053/how-can-i-synchronously-determine-a-javascript-promises-state
   Powertools.getPromiseState = function (promise) {
     util = util || require('util');
 
