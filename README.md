@@ -130,6 +130,24 @@ await promise;
 powertools.getPromiseState(promise); // Output: 'resolved'
 ```
 
+### powertools.waitForPendingPromises(promises, options)
+Wait for `options.max` promises to resolve before continuing. This is useful for when you have a large number of promises and you want to limit the number of concurrent promises that are running at any given time. This promise **rejects** if the `options.timeout` is reached.
+
+This method depends on `util` from Node.js, so it will not work in the browser.
+```js
+const promises = [
+  powertools.wait(1000),
+  powertools.wait(2000),
+  powertools.wait(3000),
+];
+
+console.log('Starting processing', promises);
+
+await powertools.waitForPendingPromises(promises, {max: 2, timeout: 2000});
+
+console.log('Finished processing', promises);
+```
+
 ### powertools.escape(str)
 Add the escape character `\` before any character in `str` that needs to be escaped for a `RegExp`.
 ```js

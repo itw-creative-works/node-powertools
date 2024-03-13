@@ -62,6 +62,29 @@ describe(`${package.name}`, () => {
     });
   });
 
+  describe('.waitForPendingPromises()', () => {
+    describe('promise', () => {
+      // This test should pass because the promises do complete
+      it('promise (pending) => string (resolved) - should pass', () => {
+        // Create an array of promises that resolve after 1 second
+        const promises = [powertools.wait(100), powertools.wait(100)];
+
+        // This should not reject because the promises do resolve
+        return assert.doesNotReject(powertools.waitForPendingPromises(promises, {max: 2, timeout: 1000}));
+      });
+
+      // This test should fail because it waits for two promises that never complete
+      it('promise (pending) => string (resolved) - should fail', () => {
+        // Create an array of promises that never resolve
+        const promises = [new Promise(() => {}), new Promise(() => {})];
+
+        // This should reject because the promises never resolve
+        return assert.rejects(powertools.waitForPendingPromises(promises, {max: 2, timeout: 1000}));
+      });
+
+    });
+  });
+
   describe('.getKeys()', () => {
 
     describe('keys', () => {

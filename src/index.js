@@ -138,6 +138,38 @@
     return 'resolved';
   }
 
+  Powertools.waitForPendingPromises = function (promises, options) {
+    return new Promise(function(resolve, reject) {
+      // Fix promises
+      promises = Powertools.arrayify(promises);
+
+      // Fix options
+      options = options || {};
+      options.max = typeof options.max === 'undefined' ? 10 : options.max;
+      options.timeout = typeof options.timeout === 'undefined' ? 60000 : options.timeout;
+
+      // Poll for pending promises
+      Powertools.poll(() => {
+        const pending = promises.filter((promise) => Powertools.getPromiseState(promise) === 'pending');
+
+        // Stop and wait
+        if (pending.length >= options.max) {
+          // console.log(`Waiting for ${pending.length} pending promises to finish...`);
+          return false;
+        }
+
+        // We can continue
+        return true;
+      }, { interval: 100, timeout: options.timeout })
+      .then(() => {
+        return resolve();
+      })
+      .catch((e) => {
+        return reject(new Error('Timed out waiting for pending promises to finish'));
+      })
+    });
+  }
+
   Powertools.queue = function (options) {
     return new FunctionQueue(options);
   }
