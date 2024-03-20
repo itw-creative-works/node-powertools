@@ -71,11 +71,13 @@
     return !Array.isArray(input) ? [input] : input;
   };
 
-  Powertools.wait = function (ms) {
+  Powertools.wait = function (min, max, options) {
     return new Promise(function(resolve, reject) {
+      const timeout = typeof max === 'undefined' ? min : Powertools.random(min, max, options);
+
       setTimeout(function() {
         resolve();
-      }, ms || 1);
+      }, timeout || 1);
     });
   }
 
