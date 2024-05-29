@@ -502,11 +502,14 @@
         schemaDefault.min = schemaDefault.min || 0;
         schemaDefault.max = schemaDefault.max || Infinity;
 
+        // Prepare wether we should execute the function
+        const shouldExecute = !schemaDefault.types.includes('any') && !schemaDefault.types.includes('function');
+
         // Run functions
-        if (typeof schemaDefault.value === 'function') {
+        if (typeof schemaDefault.value === 'function' && shouldExecute) {
           schemaDefault.value = schemaDefault.value();
         }
-        if (typeof schemaDefault.default === 'function') {
+        if (typeof schemaDefault.default === 'function' && shouldExecute) {
           schemaDefault.default = schemaDefault.default();
         }
 
