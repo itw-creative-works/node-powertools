@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://cdn.itwcreativeworks.com/assets/itw-creative-works/images/logo/itw-creative-works-brandmark-black-x.svg">
+  <a href="https://itwcreativeworks.com">
     <img src="https://cdn.itwcreativeworks.com/assets/itw-creative-works/images/logo/itw-creative-works-brandmark-black-x.svg" width="100px">
   </a>
 </p>
@@ -24,16 +24,16 @@
   <strong>Node Powertools</strong> is an NPM module for backend and frontend developers that exposes powerful utilities and tools.
 </p>
 
-## Node Powertools Works in Node AND browser environments
+## 🌐 Node Powertools Works in Node AND browser environments
 Yes, this module works in both Node and browser environments, including compatibility with [Webpack](https://www.npmjs.com/package/webpack) and [Browserify](https://www.npmjs.com/package/browserify)!
 
-## Features
+## 🦄 Features
 * Useful **randomization** tools to mix things up
 * Helpful **polling** utilities to wait for variables or events
 * Powerful **regexify** and **escape** functions to go work with `RegExp`
 
-## Install Node Powertools
-### Install via npm
+## 📦 Install Node Powertools
+### Option 1: Install via npm
 Install with npm if you plan to use **Node Powertools** in a Node.js project or in the browser.
 ```shell
 npm install node-powertools
@@ -44,7 +44,7 @@ If you plan to use `node-powertools` in a browser environment, you will probably
 const powertools = require('node-powertools');
 ```
 
-### Install via CDN
+### Option 2: Install via CDN
 Install with CDN if you plan to use **Node Powertools** only in a browser environment.
 ```html
 <script src="https://cdn.jsdelivr.net/npm/node-powertools@latest/dist/index.min.js"></script>
@@ -54,7 +54,7 @@ Install with CDN if you plan to use **Node Powertools** only in a browser enviro
 ```
 
 
-## Usage
+## ⚡️ Usage
 ### powertools.random(min, max, options)
 Generate a random number between two numbers `min` and `max`. You can use `options` to supply a sign or randomize the sign as well. If an array is supplied, a random element from the array is returned.
 The default `options.mode` is `uniform` but you can also supply `gaussian` which will generate random values on a gaussian bell curve.
@@ -288,10 +288,10 @@ Powertools.iterate(sampleArray, asyncTask)
   .then(() => console.log('All tasks completed.'));
 ```
 
-## Final Words
+## 🗨️ Final Words
 If you are still having difficulty, we would love for you to post a question to [the Node Powertools issues page](https://github.com/itw-creative-works/node-powertools/issues). It is much easier to answer questions that include your code and relevant files! So if you can provide them, we'd be extremely grateful (and more likely to help you find the answer!)
 
-## Projects Using this Library
+## 📚 Projects Using this Library
 [Somiibo](https://somiibo.com/): A Social Media Bot with an open-source module library. <br>
 [JekyllUp](https://jekyllup.com/): A website devoted to sharing the best Jekyll themes. <br>
 [Slapform](https://slapform.com/): A backend processor for your HTML forms on static sites. <br>
