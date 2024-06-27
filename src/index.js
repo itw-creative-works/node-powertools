@@ -73,11 +73,16 @@
 
   Powertools.wait = function (min, max, options) {
     return new Promise(function(resolve, reject) {
-      const timeout = typeof max === 'undefined' ? min : Powertools.random(min, max, options);
+      var timeout = (typeof max === 'undefined' || max < 1)
+        ? min
+        : Powertools.random(min, max, options);
+
+      // Set fallback timeout
+      timeout = timeout || 0;
 
       setTimeout(function() {
-        resolve();
-      }, timeout || 1);
+        return resolve(timeout);
+      }, timeout);
     });
   }
 
@@ -152,7 +157,7 @@
 
       // Poll for pending promises
       Powertools.poll(() => {
-        const pending = promises.filter((promise) => Powertools.getPromiseState(promise) === 'pending');
+        var pending = promises.filter((promise) => Powertools.getPromiseState(promise) === 'pending');
 
         // Stop and wait
         if (pending.length >= options.max) {
@@ -503,7 +508,7 @@
         schemaDefault.max = schemaDefault.max || Infinity;
 
         // Prepare wether we should execute the function
-        const shouldExecute = !schemaDefault.types.includes('any') && !schemaDefault.types.includes('function');
+        var shouldExecute = !schemaDefault.types.includes('any') && !schemaDefault.types.includes('function');
 
         // Run functions
         if (typeof schemaDefault.value === 'function' && shouldExecute) {
