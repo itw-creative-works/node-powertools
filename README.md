@@ -298,21 +298,21 @@ await powertools.execute('ls -a')
 })
 
 // Run a command with config
-await powertools.execute('ls', {
+await powertools.execute('ls -a', {
   config: {cwd: '/path/to/directory'},
 })
 .then((output) => {
   console.log('Files:', output);
 })
 
-// Run a command with options
-// log=true will log the command to the console but there will be no output when the promise resolves
-await powertools.execute('ls', {
+// Run a command with options like options.log
+// This will write the command's output to process.stdout and process.stderr
+// This is useful if you're running an intensive command and want to see the output in real-time
+await powertools.execute('ls -a', {
   log: true,
-  config: {cwd: '/path/to/directory'},
 })
 .then((output) => {
-  console.log('Files:', output); // Output will be an empty string
+  console.log('Files:', output);
 })
 ```
 
