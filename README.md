@@ -288,6 +288,34 @@ Powertools.iterate(sampleArray, asyncTask)
   .then(() => console.log('All tasks completed.'));
 ```
 
+### powertools.execute(command, options)
+Asynchronously execute a `command` in the terminal. This function is useful for when you need to run a command in the terminal and wait for it to complete before moving on to the next step in your code.
+```js
+// Run a simple command
+await powertools.execute('ls -a')
+.then((output) => {
+  console.log('Files:', output);
+})
+
+// Run a command with config
+await powertools.execute('ls', {
+  config: {cwd: '/path/to/directory'},
+})
+.then((output) => {
+  console.log('Files:', output);
+})
+
+// Run a command with options
+// log=true will log the command to the console but there will be no output when the promise resolves
+await powertools.execute('ls', {
+  log: true,
+  config: {cwd: '/path/to/directory'},
+})
+.then((output) => {
+  console.log('Files:', output); // Output will be an empty string
+})
+```
+
 ## 🗨️ Final Words
 If you are still having difficulty, we would love for you to post a question to [the Node Powertools issues page](https://github.com/itw-creative-works/node-powertools/issues). It is much easier to answer questions that include your code and relevant files! So if you can provide them, we'd be extremely grateful (and more likely to help you find the answer!)
 

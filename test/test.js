@@ -62,6 +62,43 @@ describe(`${package.name}`, () => {
     });
   });
 
+  // Test: powertools.poll()
+  describe('.poll()', () => {
+
+    it('should resolve if the condition is met within the timeout period', async () => {
+      const result = await powertools.poll((index) => index === 3, { interval: 100, timeout: 500 });
+      assert.strictEqual(result, undefined); // The poll function resolves without a value
+    });
+
+    it('should reject if the condition is not met within the timeout period', async () => {
+      await assert.rejects(powertools.poll((index) => index === 10, { interval: 100, timeout: 500 }), Error, 'Timed out');
+    });
+
+    it('should resolve immediately if the condition is met on the first try', async () => {
+      const result = await powertools.poll((index) => index === 0, { interval: 100, timeout: 500 });
+      assert.strictEqual(result, undefined); // The poll function resolves without a value
+    });
+
+    it('should handle async functions and resolve if the condition is met within the timeout period', async () => {
+      const asyncCondition = async (index) => {
+        await new Promise((resolve) => setTimeout(resolve, 50)); // Simulate async delay
+        return index === 3;
+      };
+      const result = await powertools.poll(asyncCondition, { interval: 100, timeout: 1000 });
+      assert.strictEqual(result, undefined); // The poll function resolves without a value
+    });
+
+    it('should handle async functions and reject if the condition is not met within the timeout period', async () => {
+      const asyncCondition = async (index) => {
+        await new Promise((resolve) => setTimeout(resolve, 50)); // Simulate async delay
+        return index === 10;
+      };
+      await assert.rejects(powertools.poll(asyncCondition, { interval: 100, timeout: 500 }), Error, 'Timed out');
+    });
+
+  });
+
+
   describe('.waitForPendingPromises()', () => {
     describe('promise', () => {
       // This test should pass because the promises do complete
@@ -308,8 +345,8 @@ describe(`${package.name}`, () => {
 
   });
 
+  // Test: powertools.template()
   describe('.template()', () => {
-
     describe('template', () => {
       // Normal
       it('string (one key)', () => {
@@ -329,6 +366,7 @@ describe(`${package.name}`, () => {
 
   });
 
+  // Test: powertools.defaults()
   describe('defaults()', () => {
     const defaults = {
       basic: {
@@ -534,5 +572,21 @@ describe(`${package.name}`, () => {
     // });
   });
 
+  // Test: powertools.execute()
+  describe('.execute()', () => {
 
+    it('should execute a command and log output', async () => {
+      const result = await powertools.execute('echo Hello, World!', { log: true, config: {} });
+      assert.strictEqual(result, '');
+    });
+
+    it('should execute a command and capture output without logging', async () => {
+      const result = await powertools.execute('echo Hello, World!', { log: false, config: {} });
+      assert.strictEqual(result.trim(), 'Hello, World!');
+    });
+
+    it('should execute a command and reject with error for invalid command', async () => {
+      await assert.rejects(powertools.execute('invalidcommand', { log: false, config: {} }));
+    });
+  });
 })

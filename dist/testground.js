@@ -9,7 +9,17 @@ const powertools = require('./index.js');
 
   console.log('START', promises);
 
-  await powertools.waitForPendingPromises(promises, {max: 2, timeout: 2000});
+  // Test: waitForPendingPromises()
+  // await powertools.waitForPendingPromises(promises, {max: 2, timeout: 2000});
+
+  // Test: execute()
+  await powertools.execute('ls -a', {}, {log: false})
+  .then((r) => console.log('SUCCESS', r))
+  .catch((e) => console.log('ERROR', e));
+
+  await powertools.execute('ivalidcommand', {}, {log: false})
+  .then((r) => console.log('SUCCESS', r))
+  .catch((e) => console.log('ERROR', e));
 
   console.log('STOP', promises);
 }());
