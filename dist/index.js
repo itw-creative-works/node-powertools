@@ -365,34 +365,32 @@
     // Default config
     options.config = options.config || {};
     options.config.stdio = options.config.stdio || (options.log ? 'inherit' : 'pipe');
+    // Ensure it uses a shell to handle command chaining and maintain colors (like when using "&&" or "||")
+    options.config.shell = typeof options.config.shell === 'undefined' ? true : options.config.shell;
 
     return new Promise(function (resolve, reject) {
-      // Split the command into the command itself and its arguments
-      var parts = cmd.split(' ');
-      var command = parts[0];
-      var args = parts.slice(1);
-
       // Log if debug is enabled
       if (options.debug) {
-        console.log('Running command', command, args);
+        console.log('Running command', cmd);
       }
 
-      // Use spawn instead of exec
-      var child = cp.spawn(command, args, options.config);
+      // Use spawn to handle multiple commands and maintain streaming output
+      var child = cp.spawn(cmd, options.config);
 
       // Capture the output
       var output = '';
       var errorOutput = '';
 
-      // If we're not logging, capture the output
-      // child.stdout is null if stdio is 'inherit'
+      // Handle streaming output if not logging directly
       if (!options.log) {
         child.stdout.on('data', function (data) {
           output += data.toString();
+          process.stdout.write(data); // Maintain colors in the logs
         });
 
         child.stderr.on('data', function (data) {
           errorOutput += data.toString();
+          process.stderr.write(data); // Maintain colors in the logs
         });
       }
 
