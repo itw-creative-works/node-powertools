@@ -382,15 +382,17 @@
       var errorOutput = '';
 
       // Handle streaming output if not logging directly
-      if (!options.log) {
+      if (child.stdout) {
         child.stdout.on('data', function (data) {
           output += data.toString();
-          process.stdout.write(data); // Maintain colors in the logs
+          // process.stdout.write(data); // Maintain colors in the logs
         });
+      }
 
+      if (child.stderr) {
         child.stderr.on('data', function (data) {
           errorOutput += data.toString();
-          process.stderr.write(data); // Maintain colors in the logs
+          // process.stderr.write(data); // Maintain colors in the logs
         });
       }
 
