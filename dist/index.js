@@ -24,7 +24,8 @@
   }
 
   // Libraries
-  // ...
+  var util;
+  var cp;
 
   // Main
   function Powertools(options) {
@@ -131,7 +132,7 @@
   // https://stackoverflow.com/questions/30564053/how-can-i-synchronously-determine-a-javascript-promises-state
   // https://dev.to/xnimorz/101-series-promises-2-how-to-get-current-promise-status-and-build-your-own-promise-queue-18j8
   Powertools.getPromiseState = function (promise) {
-    var util = require('util');
+    util = util || require('util');
 
     if (!(typeof promise === 'object' && typeof promise.then === 'function')) {
       throw new TypeError('Expected a promise, got ' + typeof promise);
@@ -355,7 +356,7 @@
 
   // execute
   Powertools.execute = function(cmd, options) {
-    var cp = require('child_process');
+    cp = cp || require('child_process');
 
     // Default options
     options = options || {};
