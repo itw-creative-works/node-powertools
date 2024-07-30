@@ -288,7 +288,7 @@ Powertools.iterate(sampleArray, asyncTask)
   .then(() => console.log('All tasks completed.'));
 ```
 
-### powertools.execute(command, options)
+### powertools.execute(command, options, setupCallback)
 Asynchronously execute a `command` in the terminal. This function is useful for when you need to run a command in the terminal and wait for it to complete before moving on to the next step in your code.
 ```js
 // Run a simple command
@@ -310,6 +310,16 @@ await powertools.execute('ls -a', {
 // This is useful if you're running an intensive command and want to see the output in real-time
 await powertools.execute('ls -a', {
   log: true,
+})
+.then((output) => {
+  console.log('Files:', output);
+})
+
+// Run with a setupCallback
+await powertools.execute('ls -a', {
+  log: true,
+}, (child) => {
+  console.log('Child process:', child);
 })
 .then((output) => {
   console.log('Files:', output);

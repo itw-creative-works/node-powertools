@@ -355,7 +355,7 @@
   };
 
   // execute
-  Powertools.execute = function(cmd, options) {
+  Powertools.execute = function(cmd, options, setupCallback) {
     cp = cp || require('child_process');
 
     // Default options
@@ -410,6 +410,11 @@
           return resolve(output);
         }
       });
+
+      // Run the setup callback if it is provided
+      if (typeof setupCallback === 'function') {
+        setupCallback(child);
+      }
     });
   };
 
