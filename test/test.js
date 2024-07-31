@@ -362,6 +362,11 @@ describe(`${package.name}`, () => {
       it('string (object key)', () => {
         return assert.deepEqual(powertools.template('Expanded object: {settings}', {settings: {color: 'purple'}}), 'Expanded object: {"color":"purple"}');
       });
+
+      // Handles spaces
+      it('string (one key) with spaces', () => {
+        return assert.deepEqual(powertools.template('My favorite color is {color}, { color }, {   color }', {color: 'purple'}), 'My favorite color is purple, purple, purple');
+      });
     });
 
   });

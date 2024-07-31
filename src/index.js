@@ -257,14 +257,15 @@
       throw new Error('No string provided');
     }
 
-    return input.replace(/\{([\w\s\.]*)\}/g, function (match, key) {
-      var value = getNestedValue(settings, key);
+    return input.replace(/\{\s*([\w\s\.]*)\s*\}/g, function (match, key) {
+      var trimmed = key.trim();
+      var value = getNestedValue(settings, trimmed);
 
       // If object, return JSON
       if (typeof value === 'object') {
         return JSON.stringify(value);
       } else {
-        return value;
+        return value !== undefined ? value : match;
       }
     });
   };
