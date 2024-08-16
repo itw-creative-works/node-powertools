@@ -39,6 +39,34 @@ describe(`${package.name}`, () => {
 
   });
 
+  // Test the .random function
+  describe('.random()', () => {
+    describe('random', () => {
+      // Normal
+      it('random (0, 10) => number (0-10)', () => {
+        return assert.ok(powertools.random(0, 10) >= 0 && powertools.random(0, 10) <= 10);
+      });
+      it('random (-10, 0) => number (-10, 0)', () => {
+        return assert.ok(powertools.random(-10, 0) >= -10 && powertools.random(-10, 0) <= 0);
+      });
+      it('random (-10, -20) => number (-10, -20)', () => {
+        return assert.ok(powertools.random(-10, -20) >= -20 && powertools.random(-10, -20) <= -10);
+      });
+      it('random (-10, 10) => number (-10, 10)', () => {
+        return assert.ok(powertools.random(-10, 10) >= -10 && powertools.random(-10, 10) <= 10);
+      });
+      // Test random with array
+      it('random (array) => string (random)', () => {
+        return assert.ok(['a', 'b', 'c'].includes(powertools.random(['a', 'b', 'c'])));
+      });
+
+      // Edge
+      it('random (0, 0) => number (0)', () => {
+        return assert.equal(powertools.random(0, 0), 0);
+      });
+    });
+  })
+
   describe('.getPromiseState()', () => {
     describe('promise', () => {
       // Normal

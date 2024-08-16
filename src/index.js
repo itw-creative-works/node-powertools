@@ -33,41 +33,93 @@
   };
 
   // Random number generator
-  Powertools.random = function (arg1, arg2, arg3) {
+  // Powertools.random = function (arg1, arg2, arg3) {
+  //   var isArray = Array.isArray(arg1);
+  //   var min, max, options, result;
+  //   if (isArray) {
+  //     min = 0;
+  //     max = arg1.length - 1;
+  //     options = arg2 || {};
+  //   } else {
+  //     min = arg1;
+  //     max = arg2;
+  //     options = arg3 || {};
+  //   }
+
+  //   if (!options.mode || options.mode === 'uniform') {
+  //     result = Math.floor(Math.random() * (max - min + 1) + min);
+  //   } else if (options.mode === 'gaussian') {
+  //     result = 0;
+  //     options.samples = options.samples || 3;
+
+  //     for (var i = 0; i < options.samples; i++) {
+  //       result += Math.random() + (options.flux || 0);
+  //     }
+
+  //     result = result / options.samples;
+  //     result = Math.floor(min + result * (max - min + 1));
+  //     result = result < min ? min : result;
+  //     result = result > max ? max : result;
+  //   }
+
+  //   if (isArray) {
+  //     return arg1[result]
+  //   } else {
+  //     return result;
+  //   }
+  // };
+  Powertools.random = function(arg1, arg2, arg3) {
     var isArray = Array.isArray(arg1);
-    var min, max, options, result;
+    var min, max, options;
+
     if (isArray) {
-      min = 0;
-      max = arg1.length - 1;
       options = arg2 || {};
+      var result = _random(0, arg1.length - 1, options);
+      return arg1[result];
     } else {
       min = arg1;
       max = arg2;
       options = arg3 || {};
-    }
-
-    if (!options.mode || options.mode === 'uniform') {
-      result = Math.floor(Math.random() * (max - min + 1) + min);
-    } else if (options.mode === 'gaussian') {
-      result = 0;
-      options.samples = options.samples || 3;
-
-      for (var i = 0; i < options.samples; i++) {
-        result += Math.random() + (options.flux || 0);
-      }
-
-      result = result / options.samples;
-      result = Math.floor(min + result * (max - min + 1));
-      result = result < min ? min : result;
-      result = result > max ? max : result;
-    }
-
-    if (isArray) {
-      return arg1[result]
-    } else {
-      return result;
+      return _random(min, max, options);
     }
   };
+
+  function _random(min, max, options) {
+    var mode = options.mode || 'uniform';
+    var skew = options.skew || 0.5;
+
+    if (mode === 'uniform') {
+      return _generateUniform(min, max);
+    } else {
+      return _generateGaussian(min, max, skew);
+    }
+  }
+
+  function _generateGaussian(min, max, skew) {
+    var mean = min + skew * (max - min);
+    var stdDev = (max - min) / 6;
+
+    var randomValue = mean + _gaussianRandom() * stdDev;
+
+    if (randomValue < min) return min;
+    if (randomValue > max) return max;
+    return Math.round(randomValue);
+  }
+
+  function _generateUniform(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  function _gaussianRandom() {
+    var u = _safeRandom();
+    var v = _safeRandom();
+    return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+  }
+
+  function _safeRandom() {
+    var r = Math.random();
+    return r === 0 ? _safeRandom() : r;
+  }
 
   // Ensure input is an array
   Powertools.arrayify = function (input) {
