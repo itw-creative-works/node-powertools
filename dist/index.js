@@ -68,7 +68,7 @@
   //     return result;
   //   }
   // };
-  Powertools.random = function(arg1, arg2, arg3) {
+  Powertools.random = function (arg1, arg2, arg3) {
     var isArray = Array.isArray(arg1);
     var min, max, options;
 
@@ -408,7 +408,7 @@
   };
 
   // execute
-  Powertools.execute = function(cmd, options, setupCallback) {
+  Powertools.execute = function (cmd, options, setupCallback) {
     cp = cp || require('child_process');
 
     // Default options
@@ -471,6 +471,51 @@
     });
   };
 
+  // Whitelist keys from an object
+  Powertools.whitelist = function (obj, keys) {
+    // Ensure the first argument is an object
+    if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) {
+      throw new Error('First argument must be an object');
+    }
+
+    // Ensure the second argument is an array
+    if (!Array.isArray(keys)) {
+      throw new Error('Second argument must be an array of strings');
+    }
+
+    // Build the result object
+    const result = {};
+
+    // Loop through the keys
+    keys.forEach((key) => {
+      const keyParts = key.split('.');
+      let currentObj = obj;
+      let currentResult = result;
+
+      // Loop through the parts of the key
+      for (let i = 0; i < keyParts.length; i++) {
+        const part = keyParts[i];
+
+        // If the key is not in the object, break
+        if (!(part in currentObj)) {
+          break;
+        }
+
+        // If we are at the end of the key, set the value
+        if (i === keyParts.length - 1) {
+          currentResult[part] = currentObj[part];
+        } else {
+          currentObj = currentObj[part];
+          currentResult[part] = currentResult[part] || {};
+          currentResult = currentResult[part];
+        }
+      }
+    });
+
+    // Return the result
+    return result;
+  };
+
   // Helpers
   function getKeys(obj, prefix) {
     var keys = Object.keys(obj);
@@ -493,12 +538,12 @@
   function serializer(replacer, cycleReplacer) {
     var stack = [], keys = []
 
-    if (cycleReplacer == null) cycleReplacer = function(key, value) {
+    if (cycleReplacer == null) cycleReplacer = function (key, value) {
       if (stack[0] === value) return "[Circular ~]"
       return "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]"
     }
 
-    return function(key, value) {
+    return function (key, value) {
       if (stack.length > 0) {
         var thisPos = stack.indexOf(this)
         ~thisPos ? stack.splice(thisPos + 1) : stack.push(this)

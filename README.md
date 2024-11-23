@@ -326,6 +326,12 @@ await powertools.execute('ls -a', {
 })
 ```
 
+### powertools.whitelist(obj, keys)
+Return a new object with only the keys in `keys` from `obj`.
+```js
+powertools.whiteList({name: 'Jon Snow', age: 25}, ['name']); // Output: {name: 'Jon Snow'}
+```
+
 ## 🗨️ Final Words
 If you are still having difficulty, we would love for you to post a question to [the Node Powertools issues page](https://github.com/itw-creative-works/node-powertools/issues). It is much easier to answer questions that include your code and relevant files! So if you can provide them, we'd be extremely grateful (and more likely to help you find the answer!)
 

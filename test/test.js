@@ -622,4 +622,68 @@ describe(`${package.name}`, () => {
       await assert.rejects(powertools.execute('invalidcommand', { log: false, config: {} }));
     });
   });
+
+  // Test the .whitelist function
+  describe('.whitelist()', () => {
+    describe('whitelist', () => {
+      // Normal
+      it('should filter top-level keys based on the whitelist', () => {
+        const obj = { a: 1, b: 2, c: 3 };
+        const keys = ['a', 'c'];
+
+        const result = powertools.whitelist(obj, keys);
+
+        assert.deepEqual(result, { a: 1, c: 3 });
+      });
+
+      it('should filter nested keys using dot notation', () => {
+        const obj = {
+          a: { x: 1, y: 2 },
+          b: { z: 3 },
+          c: 4,
+        };
+        const keys = ['a.x', 'b.z'];
+
+        const result = powertools.whitelist(obj, keys);
+
+        assert.deepEqual(result, { a: { x: 1 }, b: { z: 3 } });
+      });
+
+      // Edge cases
+      it('should return an empty object if no keys match', () => {
+        const obj = { a: 1, b: 2, c: 3 };
+        const keys = ['x', 'y'];
+
+        const result = powertools.whitelist(obj, keys);
+
+        assert.deepEqual(result, {});
+      });
+
+      it('should handle empty input object gracefully', () => {
+        const obj = {};
+        const keys = ['a', 'b'];
+
+        const result = powertools.whitelist(obj, keys);
+
+        assert.deepEqual(result, {});
+      });
+
+      it('should throw an error if the first argument is not an object', () => {
+        assert.throws(() => powertools.whitelist(null, ['a']), /First argument must be an object/);
+      });
+
+      it('should throw an error if the second argument is not an array', () => {
+        assert.throws(() => powertools.whitelist({ a: 1 }, 'a'), /Second argument must be an array of strings/);
+      });
+
+      it('should handle empty whitelist array by returning an empty object', () => {
+        const obj = { a: 1, b: 2 };
+        const keys = [];
+
+        const result = powertools.whitelist(obj, keys);
+
+        assert.deepEqual(result, {});
+      });
+    });
+  });
 })
