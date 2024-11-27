@@ -686,4 +686,42 @@ describe(`${package.name}`, () => {
       });
     });
   });
+
+  // Test the hyphenate function
+  describe('powertools.hyphenate', () => {
+    it('should hyphenate a basic string', () => {
+      const result = powertools.hyphenate('Hello World');
+      assert.equal(result, 'hello-world');
+    });
+
+    it('should convert string to lowercase if option is true', () => {
+      const result = powertools.hyphenate('Hello World', { lowercase: true });
+      assert.equal(result, 'hello-world');
+    });
+
+    it('should not convert string to lowercase if option is false', () => {
+      const result = powertools.hyphenate('Hello World', { lowercase: false });
+      assert.equal(result, 'Hello-World');
+    });
+
+    it('should remove non-alphanumeric characters if option is true', () => {
+      const result = powertools.hyphenate('Hello, World!', { removeNonAlphanumeric: true });
+      assert.equal(result, 'hello-world');
+    });
+
+    it('should not remove non-alphanumeric characters if option is false', () => {
+      const result = powertools.hyphenate('Hello, World!', { removeNonAlphanumeric: false });
+      assert.equal(result, 'hello,-world!');
+    });
+
+    it('should handle empty strings gracefully', () => {
+      const result = powertools.hyphenate('');
+      assert.equal(result, '');
+    });
+
+    it('should handle custom options correctly', () => {
+      const result = powertools.hyphenate('Hello, World!', { lowercase: false, removeNonAlphanumeric: false });
+      assert.equal(result, 'Hello,-World!');
+    });
+  });
 })

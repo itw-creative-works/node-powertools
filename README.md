@@ -332,6 +332,15 @@ Return a new object with only the keys in `keys` from `obj`.
 powertools.whiteList({name: 'Jon Snow', age: 25}, ['name']); // Output: {name: 'Jon Snow'}
 ```
 
+### powertools.hyphenate(str, options)
+Convert a `str` to hyphenated case. You can use `options` to customize the hyphenation.
+```js
+powertools.hyphenate('Jon Snow'); // Output: 'jon-snow'
+powertools.hyphenate('Jon Snow', {lowercase: false}); // Output: 'Jon-Snow'
+powerTools.hyphenate('Jon Snow!', {removeNonAlphanumeric: true}); // Output: 'jon-snow'
+```
+
+
 ## 🗨️ Final Words
 If you are still having difficulty, we would love for you to post a question to [the Node Powertools issues page](https://github.com/itw-creative-works/node-powertools/issues). It is much easier to answer questions that include your code and relevant files! So if you can provide them, we'd be extremely grateful (and more likely to help you find the answer!)
 

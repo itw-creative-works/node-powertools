@@ -516,6 +516,26 @@
     return result;
   };
 
+  // Hyphenate a string
+  Powertools.hyphenate = function (string, options) {
+    options = options || {};
+    options.removeNonAlphanumeric = typeof options.removeNonAlphanumeric === 'undefined' ? true : options.removeNonAlphanumeric;
+    options.lowercase = typeof options.lowercase === 'undefined' ? true : options.lowercase;
+
+    // Perform the removal of non-alphanumeric characters
+    if (options.removeNonAlphanumeric) {
+      string = string.replace(/[^a-zA-Z0-9 ]/g, '');
+    }
+
+    // Perform the lowercase
+    if (options.lowercase) {
+      string = string.toLowerCase();
+    }
+
+    // Standard hyphenation
+    return string.replace(/ /g, '-').replace(/-+/g, '-');
+  };
+
   // Helpers
   function getKeys(obj, prefix) {
     var keys = Object.keys(obj);
