@@ -33,10 +33,10 @@
     "replace": {}
   },
   "dependencies": {
-    "itwcw-package-analytics": "^1.0.4"
+    "itwcw-package-analytics": "^1.0.6"
   },
   "devDependencies": {
     "mocha": "^8.4.0",
-    "prepare-package": "^1.1.11"
+    "prepare-package": "^1.1.13"
   }
 }
