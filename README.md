@@ -250,7 +250,7 @@ powertools.strigify({}); // Output: '{}'
 ```
 
 ### powertools.template(str, data, options)
-Replace all instances of `{key}` in `str` with the corresponding value in `data`. You can use `options` to customize the template.
+Replace all instances of `{key}` in `str` with the corresponding value in `data`. You can use `options` to customize the template. `options.escape` will escape any HTML characters, and defaults to `true` if we're in a browser environment.
 ```js
 powertools.template(
   'My favorite color is {color}',

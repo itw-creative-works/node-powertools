@@ -28,46 +28,10 @@
   var cp;
 
   // Main
-  function Powertools(options) {
+  function Powertools() {
 
   };
 
-  // Random number generator
-  // Powertools.random = function (arg1, arg2, arg3) {
-  //   var isArray = Array.isArray(arg1);
-  //   var min, max, options, result;
-  //   if (isArray) {
-  //     min = 0;
-  //     max = arg1.length - 1;
-  //     options = arg2 || {};
-  //   } else {
-  //     min = arg1;
-  //     max = arg2;
-  //     options = arg3 || {};
-  //   }
-
-  //   if (!options.mode || options.mode === 'uniform') {
-  //     result = Math.floor(Math.random() * (max - min + 1) + min);
-  //   } else if (options.mode === 'gaussian') {
-  //     result = 0;
-  //     options.samples = options.samples || 3;
-
-  //     for (var i = 0; i < options.samples; i++) {
-  //       result += Math.random() + (options.flux || 0);
-  //     }
-
-  //     result = result / options.samples;
-  //     result = Math.floor(min + result * (max - min + 1));
-  //     result = result < min ? min : result;
-  //     result = result > max ? max : result;
-  //   }
-
-  //   if (isArray) {
-  //     return arg1[result]
-  //   } else {
-  //     return result;
-  //   }
-  // };
   Powertools.random = function (arg1, arg2, arg3) {
     var isArray = Array.isArray(arg1);
     var min, max, options;
@@ -329,7 +293,10 @@
 
     // Default options
     options = options || {};
-    options.escape = typeof options.escape === 'undefined' ? true : options.escape;
+    options.escape = typeof options.escape === 'undefined'
+      // ? true
+      ? isBrowser()
+      : options.escape;
 
     // Replace the settings in the input string
     return input.replace(/\{\s*([\w\s\.]*)\s*\}/g, function (match, key) {
@@ -812,6 +779,10 @@
       }
     });
   };
+
+  function isBrowser() {
+    return typeof window !== 'undefined' && typeof window.document !== 'undefined';
+  }
 
   // FunctionQueue.js
   function FunctionQueue(options) {
