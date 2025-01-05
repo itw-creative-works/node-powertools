@@ -395,8 +395,12 @@ describe(`${package.name}`, () => {
       it('string (one key) with spaces', () => {
         return assert.deepEqual(powertools.template('My favorite color is {color}, { color }, {   color }', {color: 'purple'}), 'My favorite color is purple, purple, purple');
       });
-    });
 
+      // With escape option
+      it('string (one key) with escape option', () => {
+        return assert.deepEqual(powertools.template('My favorite color is {color}', {color: '<b>purple</b>'}, {escape: true}), 'My favorite color is &lt;b&gt;purple&lt;/b&gt;');
+      });
+    });
   });
 
   // Test: powertools.defaults()

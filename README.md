@@ -249,8 +249,8 @@ Stringify an `obj` into a JSON string even if it has circular references.
 powertools.strigify({}); // Output: '{}'
 ```
 
-### powertools.template(str, data)
-Replace all instances of `{key}` in `str` with the corresponding value in `data`.
+### powertools.template(str, data, options)
+Replace all instances of `{key}` in `str` with the corresponding value in `data`. You can use `options` to customize the template.
 ```js
 powertools.template(
   'My favorite color is {color}',
@@ -260,6 +260,11 @@ powertools.template(
   'Ian\'s favorite color is {ian.color}',
   {ian: {color: 'purple'}
 ); // Output: 'Ian\'s favorite color is purple'
+powertools.template(
+  'My favorite color is {color}',
+  {color: '<b>purple</b>'},
+  {escape: true}
+); // Output: 'My favorite color is &lt;b&gt;purple&lt;/b&gt;'
 ```
 
 ### powertools.uniquify(arr)

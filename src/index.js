@@ -304,21 +304,50 @@
   };
 
   // Replace instances of the settings in the input string
-  Powertools.template = function (input, settings) {
+  // Powertools.template = function (input, settings) {
+  //   if (typeof input !== 'string') {
+  //     throw new Error('No string provided');
+  //   }
+
+  //   return input.replace(/\{\s*([\w\s\.]*)\s*\}/g, function (match, key) {
+  //     var trimmed = key.trim();
+  //     var value = getNestedValue(settings, trimmed);
+
+  //     // If object, return JSON
+  //     if (typeof value === 'object') {
+  //       return JSON.stringify(value);
+  //     } else {
+  //       return value !== undefined ? value : match;
+  //     }
+  //   });
+  // };
+  Powertools.template = function (input, settings, options) {
+    // Ensure input is a string
     if (typeof input !== 'string') {
       throw new Error('No string provided');
     }
 
+    // Default options
+    options = options || {};
+    options.escape = typeof options.escape === 'undefined' ? true : options.escape;
+
+    // Replace the settings in the input string
     return input.replace(/\{\s*([\w\s\.]*)\s*\}/g, function (match, key) {
       var trimmed = key.trim();
       var value = getNestedValue(settings, trimmed);
 
+      // Escape HTML
+      if (options.escape && typeof value === 'string') {
+        value = escapeHTML(value);
+      }
+
       // If object, return JSON
       if (typeof value === 'object') {
-        return JSON.stringify(value);
-      } else {
-        return value !== undefined ? value : match;
+        value = JSON.stringify(value);
       }
+
+      // Return the value or the match
+      return value !== undefined ? value : match;
     });
   };
 
@@ -484,17 +513,17 @@
     }
 
     // Build the result object
-    const result = {};
+    var result = {};
 
     // Loop through the keys
-    keys.forEach((key) => {
-      const keyParts = key.split('.');
-      let currentObj = obj;
-      let currentResult = result;
+    keys.forEach(function (key) {
+      var keyParts = key.split('.');
+      var currentObj = obj;
+      var currentResult = result;
 
       // Loop through the parts of the key
-      for (let i = 0; i < keyParts.length; i++) {
-        const part = keyParts[i];
+      for (var i = 0; i < keyParts.length; i++) {
+        var part = keyParts[i];
 
         // If the key is not in the object, break
         if (!(part in currentObj)) {
@@ -750,6 +779,39 @@
 
     currentObject[keys[keys.length - 1]] = value;
   }
+
+  // Escape HTML
+  // function escapeHTML(str) {
+  //   return str.replace(/[&<>"']/g, function (match) {
+  //     const escapeMap = {
+  //       '&': '&amp;',
+  //       '<': '&lt;',
+  //       '>': '&gt;',
+  //       '"': '&quot;',
+  //       "'": '&#39;'
+  //     };
+  //     return escapeMap[match];
+  //   });
+  // }
+  function escapeHTML(str) {
+    // Escape HTML entities
+    return str.replace(/[<>&"']/g, function (m) {
+      switch (m) {
+        case '<':
+          return '&lt;';
+        case '>':
+          return '&gt;';
+        case '&':
+          return '&amp;';
+        case '"':
+          return '&quot;';
+        case "'":
+          return '&#039;';
+        default:
+          return m;
+      }
+    });
+  };
 
   // FunctionQueue.js
   function FunctionQueue(options) {

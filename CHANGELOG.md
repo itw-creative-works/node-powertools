@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `Security` in case of vulnerabilities.
 
 ---
+## [2.0.0] - 2025-01-04
+### Breaking
+- Option in `.template()` to specify whether to escape html or not, which now defaults to `true`.
+
 ## [1.0.0] - 2024-06-19
 ### Added
 - Initial release of the project 🚀
