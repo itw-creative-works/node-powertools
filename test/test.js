@@ -728,4 +728,106 @@ describe(`${package.name}`, () => {
       assert.equal(result, 'Hello,-World!');
     });
   });
+
+  // Test the .parseProxy function
+  describe('.parseProxy()', () => {
+    describe('parseProxy', () => {
+      // Valid Proxies
+      it('parses a basic proxy without protocol', () => {
+        const result = powertools.parseProxy('1.1.1.1:1111');
+        return assert.deepEqual(result.toJSON(), {
+          protocol: 'http',
+          username: null,
+          password: null,
+          host: '1.1.1.1',
+          port: '1111',
+          valid: true,
+        });
+      });
+
+      it('parses a proxy with protocol', () => {
+        const result = powertools.parseProxy('http://1.1.1.1:1111');
+        return assert.deepEqual(result.toJSON(), {
+          protocol: 'http',
+          username: null,
+          password: null,
+          host: '1.1.1.1',
+          port: '1111',
+          valid: true,
+        });
+      });
+
+      it('parses a SOCKS4 proxy', () => {
+        const result = powertools.parseProxy('socks4://1.1.1.1:1111');
+        return assert.deepEqual(result.toJSON(), {
+          protocol: 'socks4',
+          username: null,
+          password: null,
+          host: '1.1.1.1',
+          port: '1111',
+          valid: true,
+        });
+      });
+
+      it('parses a proxy with credentials', () => {
+        const result = powertools.parseProxy('username:password@1.1.1.1:1111');
+        return assert.deepEqual(result.toJSON(), {
+          protocol: 'http',
+          username: 'username',
+          password: 'password',
+          host: '1.1.1.1',
+          port: '1111',
+          valid: true,
+        });
+      });
+
+      it('parses a proxy with protocol and credentials', () => {
+        const result = powertools.parseProxy('http://username:password@1.1.1.1:1111');
+        return assert.deepEqual(result.toJSON(), {
+          protocol: 'http',
+          username: 'username',
+          password: 'password',
+          host: '1.1.1.1',
+          port: '1111',
+          valid: true,
+        });
+      });
+
+      // Invalid Proxies
+      it('handles an invalid proxy string', () => {
+        const result = powertools.parseProxy('invalidproxy');
+        return assert.deepEqual(result.toJSON(), {
+          protocol: 'http',
+          username: null,
+          password: null,
+          host: 'invalidproxy',
+          port: '',
+          valid: false,
+        });
+      });
+
+      it('handles an empty string', () => {
+        const result = powertools.parseProxy('');
+        return assert.deepEqual(result.toJSON(), {
+          protocol: 'http',
+          username: null,
+          password: null,
+          host: null,
+          port: null,
+          valid: false,
+        });
+      });
+
+      // toString Tests
+      it('returns the correct string for a valid proxy', () => {
+        const result = powertools.parseProxy('username:password@1.1.1.1:1111');
+        return assert.strictEqual(result.toString(), 'http://username:password@1.1.1.1:1111');
+      });
+
+      it('returns "[Invalid Proxy]" for an invalid proxy', () => {
+        const result = powertools.parseProxy('invalidproxy');
+        return assert.strictEqual(result.toString(), '[Invalid Proxy]');
+      });
+    });
+  });
 })

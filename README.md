@@ -345,6 +345,11 @@ powertools.hyphenate('Jon Snow', {lowercase: false}); // Output: 'Jon-Snow'
 powerTools.hyphenate('Jon Snow!', {removeNonAlphanumeric: true}); // Output: 'jon-snow'
 ```
 
+### powertools.parseProxy(proxy)
+Parse a `proxy` string into an object with `protocol`, `host`, `port`, `username`, and `password` keys.
+```js
+powertools.parseProxy('http://username:password@1.2.3.4:8080'); // Output: {protocol: 'http', host: '1.2.3.4', port: '8080', username: 'username', password: 'password'}
+```
 
 ## 🗨️ Final Words
 If you are still having difficulty, we would love for you to post a question to [the Node Powertools issues page](https://github.com/itw-creative-works/node-powertools/issues). It is much easier to answer questions that include your code and relevant files! So if you can provide them, we'd be extremely grateful (and more likely to help you find the answer!)

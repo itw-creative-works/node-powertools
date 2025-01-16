@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ---
 ## [2.0.0] - 2025-01-04
 ### Breaking
-- Option in `.template()` to specify whether to escape html or not, which now defaults to `true`.
+- Option in `.template()` to specify whether to escape html or not, which now defaults to `true` when in a browser environment, and `false` otherwise.
 
 ## [1.0.0] - 2024-06-19
 ### Added

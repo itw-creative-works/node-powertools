@@ -532,6 +532,63 @@
     return string.replace(/ /g, '-').replace(/-+/g, '-');
   };
 
+  // Hyphenate a string
+  Powertools.parseProxy = function (proxy) {
+    var result = {
+      protocol: 'http',
+      username: null,
+      password: null,
+      host: null,
+      port: null,
+      valid: false,
+    };
+
+    try {
+      // Add a default protocol if not provided
+      if (!/^(https?|socks4|socks5):\/\//.test(proxy)) {
+        proxy = 'http://' + proxy;
+      }
+
+      // Parse the URL
+      var url = new URL(proxy);
+
+      // Populate the result
+      result.protocol = url.protocol.replace(':', ''); // Remove the colon
+      result.username = url.username || null;
+      result.password = url.password || null;
+      result.host = url.hostname;
+      result.port = url.port;
+      result.valid = Boolean(url.host && url.port); // Check if host and port are valid
+    } catch (e) {
+      // If the URL constructor throws an error, it's invalid
+      result.valid = false;
+    }
+
+    // Add custom toString method
+    result.toString = function () {
+      if (!this.valid) {
+        return '[Invalid Proxy]'
+      };
+      var auth = this.username ? this.username + ':' + this.password + '@' : '';
+      return this.protocol + '://' + auth + this.host + ':' + this.port;
+    };
+
+    // Add custom toJSON method
+    result.toJSON = function () {
+      return {
+        protocol: this.protocol,
+        username: this.username,
+        password: this.password,
+        host: this.host,
+        port: this.port,
+        valid: this.valid,
+      };
+    };
+
+    // Return the result
+    return result;
+  };
+
   // Helpers
   function getKeys(obj, prefix) {
     var keys = Object.keys(obj);
