@@ -565,11 +565,14 @@
     }
 
     // Add custom toString method
-    result.toString = function () {
+    result.toString = function (options) {
+      options = options || {};
+      options.auth = typeof options.auth === 'undefined' ? true : options.auth;
+
       if (!this.valid) {
         return '[Invalid Proxy]'
       };
-      var auth = this.username ? this.username + ':' + this.password + '@' : '';
+      var auth = this.username && options.auth ? this.username + ':' + this.password + '@' : '';
       return this.protocol + '://' + auth + this.host + ':' + this.port;
     };
 

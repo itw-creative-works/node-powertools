@@ -348,7 +348,13 @@ powerTools.hyphenate('Jon Snow!', {removeNonAlphanumeric: true}); // Output: 'jo
 ### powertools.parseProxy(proxy)
 Parse a `proxy` string into an object with `protocol`, `host`, `port`, `username`, and `password` keys.
 ```js
-powertools.parseProxy('http://username:password@1.2.3.4:8080'); // Output: {protocol: 'http', host: '1.2.3.4', port: '8080', username: 'username', password: 'password'}
+const proxy = powertools.parseProxy('http://username:password@1.2.3.4:8080'); // Output: {protocol: 'http', host: '1.2.3.4', port: '8080', username: 'username', password: 'password'}
+
+// Stringify it
+console.log(proxy.toString()); // Output: 'http://username:password@1.2.3.4:8080'
+
+// Stringify it without the auth
+console.log(proxy.toString({auth: false})); // Output: 'http://1.2.3.4:8080'
 ```
 
 ## 🗨️ Final Words

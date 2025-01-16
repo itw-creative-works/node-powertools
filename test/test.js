@@ -793,6 +793,11 @@ describe(`${package.name}`, () => {
         });
       });
 
+      it('toString() works with auth = false', () => {
+        const result = powertools.parseProxy('http://username:password@1.1.1.1:1111');
+        return assert.deepEqual(result.toString({ auth: false }), 'http://1.1.1.1:1111');
+      });
+
       // Invalid Proxies
       it('handles an invalid proxy string', () => {
         const result = powertools.parseProxy('invalidproxy');
