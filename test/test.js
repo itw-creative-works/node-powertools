@@ -799,6 +799,11 @@ describe(`${package.name}`, () => {
       });
 
       // Invalid Proxies
+      it('https is gracefuly changed to http', () => {
+        const result = powertools.parseProxy('https://1.1.1.1:1111');
+        return assert.deepEqual(result.toString(), 'http://1.1.1.1:1111');
+      });
+
       it('handles an invalid proxy string', () => {
         const result = powertools.parseProxy('invalidproxy');
         return assert.deepEqual(result.toJSON(), {

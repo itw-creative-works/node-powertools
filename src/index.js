@@ -532,7 +532,7 @@
     return string.replace(/ /g, '-').replace(/-+/g, '-');
   };
 
-  // Hyphenate a string
+  // Parse proxies
   Powertools.parseProxy = function (proxy) {
     var result = {
       protocol: 'http',
@@ -551,6 +551,11 @@
 
       // Parse the URL
       var url = new URL(proxy);
+
+      // Change https to http
+      if (url.protocol === 'https:') {
+        url.protocol = 'http:';
+      }
 
       // Populate the result
       result.protocol = url.protocol.replace(':', ''); // Remove the colon
