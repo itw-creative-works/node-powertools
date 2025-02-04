@@ -461,7 +461,7 @@
       child.on('close', function (code) {
         // Log
         if (options.debug) {
-          console.error('Command completed with exit code', code);
+          console.error('Command completed with exit code', code, errorOutput);
         }
 
         if (code !== 0) {
