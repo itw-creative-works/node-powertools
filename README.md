@@ -246,7 +246,7 @@ powertools.isObject(null); // Output: false
 ### powertools.stringify(obj)
 Stringify an `obj` into a JSON string even if it has circular references.
 ```js
-powertools.strigify({}); // Output: '{}'
+powertools.stringify({}); // Output: '{}'
 ```
 
 ### powertools.template(str, data, options)
