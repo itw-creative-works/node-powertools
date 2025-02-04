@@ -448,11 +448,22 @@
 
       // Handle the 'error' event
       child.on('error', function (e) {
-        return reject(new Error('Failed to execute command: ' + e.message));
+        // Kill the process
+        // child.kill();
+
+        // Log
+        if (options.debug) {
+          console.error('Error running command', cmd, e);
+        }
       });
 
       // Resolve or reject the promise based on the exit code
       child.on('close', function (code) {
+        // Log
+        if (options.debug) {
+          console.error('Command completed with exit code', code);
+        }
+
         if (code !== 0) {
           return reject(new Error(errorOutput || ('Command failed with exit code ' + code)));
         } else {
