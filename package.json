@@ -1,6 +1,6 @@
 {
   "name": "node-powertools",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "Powerful assistive functions for Node and Browser environments.",
   "main": "dist/index.js",
   "scripts": {
@@ -37,6 +37,6 @@
   },
   "devDependencies": {
     "mocha": "^8.4.0",
-    "prepare-package": "^1.1.13"
+    "prepare-package": "^1.1.14"
   }
 }
