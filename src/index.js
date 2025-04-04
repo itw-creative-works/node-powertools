@@ -294,12 +294,20 @@
     // Default options
     options = options || {};
     options.escape = typeof options.escape === 'undefined'
-      // ? true
       ? isBrowser()
       : options.escape;
+    options.brackets = options.brackets || ['{', '}'];
+
+    // Validate brackets
+    if (!Array.isArray(options.brackets) || options.brackets.length !== 2) {
+      throw new Error('Invalid brackets option. It must be an array with two characters.');
+    }
+
+    const [openBracket, closeBracket] = options.brackets;
+    const regex = new RegExp(`${Powertools.escape(openBracket)}\\s*([\\w\\s\\.]*)\\s*${Powertools.escape(closeBracket)}`, 'g');
 
     // Replace the settings in the input string
-    return input.replace(/\{\s*([\w\s\.]*)\s*\}/g, function (match, key) {
+    return input.replace(regex, function (match, key) {
       var trimmed = key.trim();
       var value = getNestedValue(settings, trimmed);
 
@@ -317,6 +325,11 @@
       return value !== undefined ? value : match;
     });
   };
+
+  // // Helper function to escape special characters in a string for use in a regular expression
+  // function escapeRegExp(string) {
+  //   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // }
 
   // Merge options and defaults/schema
   Powertools.defaults = function (user, schema) {

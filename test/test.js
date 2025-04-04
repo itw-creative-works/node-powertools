@@ -67,89 +67,6 @@ describe(`${package.name}`, () => {
     });
   })
 
-  describe('.getPromiseState()', () => {
-    describe('promise', () => {
-      // Normal
-      it('promise (pending) => string (pending)', () => {
-        return assert.equal(powertools.getPromiseState(new Promise(() => {})), 'pending');
-      });
-      it('promise (resolved) => string (resolved)', () => {
-        return assert.equal(powertools.getPromiseState(Promise.resolve('Hello, World!')), 'resolved');
-      });
-      it('promise (rejected) => string (rejected)', () => {
-        return assert.equal(powertools.getPromiseState(Promise.reject('Hello, World!')), 'rejected');
-      });
-
-      // Edge
-      it('promise (empty) => string (resolved)', () => {
-        // should pass if getPromiseState throws an error
-        return assert.throws(() => {
-          powertools.getPromiseState();
-        });
-      });
-    });
-  });
-
-  // Test: powertools.poll()
-  describe('.poll()', () => {
-
-    it('should resolve if the condition is met within the timeout period', async () => {
-      const result = await powertools.poll((index) => index === 3, { interval: 100, timeout: 500 });
-      assert.strictEqual(result, undefined); // The poll function resolves without a value
-    });
-
-    it('should reject if the condition is not met within the timeout period', async () => {
-      await assert.rejects(powertools.poll((index) => index === 10, { interval: 100, timeout: 500 }), Error, 'Timed out');
-    });
-
-    it('should resolve immediately if the condition is met on the first try', async () => {
-      const result = await powertools.poll((index) => index === 0, { interval: 100, timeout: 500 });
-      assert.strictEqual(result, undefined); // The poll function resolves without a value
-    });
-
-    it('should handle async functions and resolve if the condition is met within the timeout period', async () => {
-      const asyncCondition = async (index) => {
-        await new Promise((resolve) => setTimeout(resolve, 50)); // Simulate async delay
-        return index === 3;
-      };
-      const result = await powertools.poll(asyncCondition, { interval: 100, timeout: 1000 });
-      assert.strictEqual(result, undefined); // The poll function resolves without a value
-    });
-
-    it('should handle async functions and reject if the condition is not met within the timeout period', async () => {
-      const asyncCondition = async (index) => {
-        await new Promise((resolve) => setTimeout(resolve, 50)); // Simulate async delay
-        return index === 10;
-      };
-      await assert.rejects(powertools.poll(asyncCondition, { interval: 100, timeout: 500 }), Error, 'Timed out');
-    });
-
-  });
-
-
-  describe('.waitForPendingPromises()', () => {
-    describe('promise', () => {
-      // This test should pass because the promises do complete
-      it('promise (pending) => string (resolved) - should pass', () => {
-        // Create an array of promises that resolve after 1 second
-        const promises = [powertools.wait(100), powertools.wait(100)];
-
-        // This should not reject because the promises do resolve
-        return assert.doesNotReject(powertools.waitForPendingPromises(promises, {max: 2, timeout: 1000}));
-      });
-
-      // This test should fail because it waits for two promises that never complete
-      it('promise (pending) => string (resolved) - should fail', () => {
-        // Create an array of promises that never resolve
-        const promises = [new Promise(() => {}), new Promise(() => {})];
-
-        // This should reject because the promises never resolve
-        return assert.rejects(powertools.waitForPendingPromises(promises, {max: 2, timeout: 1000}));
-      });
-
-    });
-  });
-
   describe('.getKeys()', () => {
 
     describe('keys', () => {
@@ -399,6 +316,16 @@ describe(`${package.name}`, () => {
       // With escape option
       it('string (one key) with escape option', () => {
         return assert.deepEqual(powertools.template('My favorite color is {color}', {color: '<b>purple</b>'}, {escape: true}), 'My favorite color is &lt;b&gt;purple&lt;/b&gt;');
+      });
+
+      // With other brackets
+      it('string (one key) with custom bracket', () => {
+        return assert.deepEqual(powertools.template('My favorite color is {{color}}', {color: 'purple'}, {brackets: ['{{', '}}']}), 'My favorite color is purple');
+      });
+
+      // With other brackets 2
+      it('string (one key) with custom bracket (2)', () => {
+        return assert.deepEqual(powertools.template('My favorite color is A+color+A', {color: 'purple'}, {brackets: ['A+', '+A']}), 'My favorite color is purple');
       });
     });
   });
@@ -838,6 +765,87 @@ describe(`${package.name}`, () => {
         const result = powertools.parseProxy('invalidproxy');
         return assert.strictEqual(result.toString(), '[Invalid Proxy]');
       });
+    });
+  });
+
+  describe('.getPromiseState()', () => {
+    describe('promise', () => {
+      // Normal
+      it('promise (pending) => string (pending)', () => {
+        return assert.equal(powertools.getPromiseState(new Promise(() => {})), 'pending');
+      });
+      it('promise (resolved) => string (resolved)', () => {
+        return assert.equal(powertools.getPromiseState(Promise.resolve('Hello, World!')), 'resolved');
+      });
+      it('promise (rejected) => string (rejected)', () => {
+        return assert.equal(powertools.getPromiseState(Promise.reject('Hello, World!')), 'rejected');
+      });
+
+      // Edge
+      it('promise (empty) => string (resolved)', () => {
+        // should pass if getPromiseState throws an error
+        return assert.throws(() => {
+          powertools.getPromiseState();
+        });
+      });
+    });
+  });
+
+  // Test: powertools.poll()
+  describe('.poll()', () => {
+
+    it('should resolve if the condition is met within the timeout period', async () => {
+      const result = await powertools.poll((index) => index === 3, { interval: 100, timeout: 500 });
+      assert.strictEqual(result, undefined); // The poll function resolves without a value
+    });
+
+    it('should reject if the condition is not met within the timeout period', async () => {
+      await assert.rejects(powertools.poll((index) => index === 10, { interval: 100, timeout: 500 }), Error, 'Timed out');
+    });
+
+    it('should resolve immediately if the condition is met on the first try', async () => {
+      const result = await powertools.poll((index) => index === 0, { interval: 100, timeout: 500 });
+      assert.strictEqual(result, undefined); // The poll function resolves without a value
+    });
+
+    it('should handle async functions and resolve if the condition is met within the timeout period', async () => {
+      const asyncCondition = async (index) => {
+        await new Promise((resolve) => setTimeout(resolve, 50)); // Simulate async delay
+        return index === 3;
+      };
+      const result = await powertools.poll(asyncCondition, { interval: 100, timeout: 1000 });
+      assert.strictEqual(result, undefined); // The poll function resolves without a value
+    });
+
+    it('should handle async functions and reject if the condition is not met within the timeout period', async () => {
+      const asyncCondition = async (index) => {
+        await new Promise((resolve) => setTimeout(resolve, 50)); // Simulate async delay
+        return index === 10;
+      };
+      await assert.rejects(powertools.poll(asyncCondition, { interval: 100, timeout: 500 }), Error, 'Timed out');
+    });
+  });
+
+  describe('.waitForPendingPromises()', () => {
+    describe('promise', () => {
+      // This test should pass because the promises do complete
+      it('promise (pending) => string (resolved) - should pass', () => {
+        // Create an array of promises that resolve after 1 second
+        const promises = [powertools.wait(100), powertools.wait(100)];
+
+        // This should not reject because the promises do resolve
+        return assert.doesNotReject(powertools.waitForPendingPromises(promises, {max: 2, timeout: 1000}));
+      });
+
+      // This test should fail because it waits for two promises that never complete
+      it('promise (pending) => string (resolved) - should fail', () => {
+        // Create an array of promises that never resolve
+        const promises = [new Promise(() => {}), new Promise(() => {})];
+
+        // This should reject because the promises never resolve
+        return assert.rejects(powertools.waitForPendingPromises(promises, {max: 2, timeout: 1000}));
+      });
+
     });
   });
 })
