@@ -256,15 +256,23 @@ powertools.template(
   'My favorite color is {color}',
   {color: 'purple'}
 ); // Output: 'My favorite color is purple'
+
 powertools.template(
   'Ian\'s favorite color is {ian.color}',
   {ian: {color: 'purple'}
 ); // Output: 'Ian\'s favorite color is purple'
+
 powertools.template(
   'My favorite color is {color}',
   {color: '<b>purple</b>'},
   {escape: true}
 ); // Output: 'My favorite color is &lt;b&gt;purple&lt;/b&gt;'
+
+powertools.template(
+  'My favorite color is %color%',
+  {color: 'purple'},
+  {brackets: ['%', '%']}
+); // Output: 'My favorite color is purple'
 ```
 
 ### powertools.uniquify(arr)

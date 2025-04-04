@@ -303,8 +303,9 @@
       throw new Error('Invalid brackets option. It must be an array with two characters.');
     }
 
-    const [openBracket, closeBracket] = options.brackets;
-    const regex = new RegExp(`${Powertools.escape(openBracket)}\\s*([\\w\\s\\.]*)\\s*${Powertools.escape(closeBracket)}`, 'g');
+    var openBracket = options.brackets[0];
+    var closeBracket = options.brackets[1];
+    var regex = new RegExp(Powertools.escape(openBracket) + '\\s*([\\w\\s\\.]*)\\s*' + Powertools.escape(closeBracket), 'g');
 
     // Replace the settings in the input string
     return input.replace(regex, function (match, key) {
