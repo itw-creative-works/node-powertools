@@ -212,7 +212,7 @@
 
   // Escape a string for use in a regular expression
   Powertools.escape = function (s) {
-    return (s + '').replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    return (s + '').replace(/[-\/\\^$*+?'`<>!#%&.;()|[\]{}]/g, '\\$&');
   };
 
   // Turn a string into a regular expression
