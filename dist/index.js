@@ -85,6 +85,24 @@
     return r === 0 ? _safeRandom() : r;
   }
 
+  Powertools.chance = function (probability, options) {
+    // Ensure probability is between 0 and 1
+    if (probability <= 0) {
+      return false;
+    } else if (probability >= 1) {
+      return true;
+    }
+
+    // Use a big number factor for precision
+    var factor = 1000000;
+
+    // Generate a random number between 0 and the factor, then scale it to 0-1
+    var randomValue = Powertools.random(0, factor, options) / factor;
+
+    // Compare the scaled random value to the probability
+    return randomValue <= probability;
+  };
+
   // Ensure input is an array
   Powertools.arrayify = function (input) {
     return !Array.isArray(input) ? [input] : input;
@@ -300,9 +318,10 @@
 
     // Validate brackets
     if (!Array.isArray(options.brackets) || options.brackets.length !== 2) {
-      throw new Error('Invalid brackets option. It must be an array with two characters.');
+      throw new Error('Invalid brackets.');
     }
 
+    // Escape brackets
     var openBracket = options.brackets[0];
     var closeBracket = options.brackets[1];
     var regex = new RegExp(Powertools.escape(openBracket) + '\\s*([\\w\\s\\.]*)\\s*' + Powertools.escape(closeBracket), 'g');

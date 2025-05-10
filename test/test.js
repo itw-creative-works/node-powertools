@@ -67,6 +67,27 @@ describe(`${package.name}`, () => {
     });
   })
 
+  // test the chance fn
+  describe('.chance()', () => {
+    describe('chance', () => {
+      // Normal
+      it('chance (0) => false', () => {
+        return assert.equal(powertools.chance(0), false);
+      });
+      it('chance (1) => true', () => {
+        return assert.equal(powertools.chance(1), true);
+      });
+      it('chance (50) => boolean', () => {
+        return assert.ok(typeof powertools.chance(50) === 'boolean');
+      });
+
+      // Edge
+      it('chance (100) => true', () => {
+        return assert.equal(powertools.chance(100), true);
+      });
+    });
+  });
+
   describe('.getKeys()', () => {
 
     describe('keys', () => {

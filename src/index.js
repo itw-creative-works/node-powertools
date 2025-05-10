@@ -85,6 +85,24 @@
     return r === 0 ? _safeRandom() : r;
   }
 
+  Powertools.chance = function (probability, options) {
+    // Ensure probability is between 0 and 1
+    if (probability <= 0) {
+      return false;
+    } else if (probability >= 1) {
+      return true;
+    }
+
+    // Use a big number factor for precision
+    var factor = 1000000;
+
+    // Generate a random number between 0 and the factor, then scale it to 0-1
+    var randomValue = Powertools.random(0, factor, options) / factor;
+
+    // Compare the scaled random value to the probability
+    return randomValue <= probability;
+  };
+
   // Ensure input is an array
   Powertools.arrayify = function (input) {
     return !Array.isArray(input) ? [input] : input;
