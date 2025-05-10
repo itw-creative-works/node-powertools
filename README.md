@@ -65,6 +65,12 @@ powertools.random(-100, 100, {mode: 'gaussian'}); // Possible output: -69
 powertools.random(['Apple', 'Orange', 'Pear']); // Possible output: Orange (random element)
 ```
 
+### powertools.cahnce(chance, options)
+Generate a random number between 0 and 100. If the random number is less than or equal to `chance`, return `true`. Otherwise, return `false`. You can use `options` to supply a sign or randomize the sign as well.
+```js
+powertools.chance(0.5); // Possible output: true
+```
+
 ### powertools.arrayify(input)
 Transform the `input` into an array if it is not already.
 ```js
